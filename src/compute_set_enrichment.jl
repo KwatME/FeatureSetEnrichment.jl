@@ -10,7 +10,7 @@ function compute_set_enrichment(
     element_values::Vector{Float64},
     elements::Vector{String},
     vector_01::Vector{Int64};
-    compute_cumulative_sums::Bool = false,
+    compute_cumulative_sums::Bool=false,
 )
 
     element_values_abs = abs.(element_values)
@@ -80,8 +80,8 @@ function compute_set_enrichment(
     element_values::Vector{Float64},
     elements::Vector{String},
     set_elements::Vector{String};
-    element_index::Union{Nothing,Dict{String,Int64}} = nothing,
-    compute_cumulative_sums::Bool = false,
+    element_index::Union{Nothing,Dict{String,Int64}}=nothing,
+    compute_cumulative_sums::Bool=false,
 )
 
     if element_index === nothing
@@ -98,7 +98,7 @@ function compute_set_enrichment(
         element_values,
         elements,
         vector_01;
-        compute_cumulative_sums = compute_cumulative_sums,
+        compute_cumulative_sums=compute_cumulative_sums,
     )
 
 end
@@ -108,12 +108,12 @@ function compute_set_enrichment(
     element_values::Vector{Float64},
     elements::Vector{String},
     set_elements::Dict{String,Vector{String}};
-    sort_::Bool = true,
+    sort_::Bool=true,
 )
 
     if sort_
 
-        element_values, elements = sort_vectors([element_values, elements]; reverse = true,)
+        element_values, elements = sort_vectors([element_values, elements]; reverse=true,)
 
     end
 
@@ -138,7 +138,7 @@ function compute_set_enrichment(
             element_values,
             elements,
             set_elements_;
-            element_index = element_index,
+            element_index=element_index,
         )
 
     end

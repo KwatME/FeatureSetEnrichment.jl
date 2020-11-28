@@ -8,10 +8,10 @@ function gsea(
     gene_x_sample_tsv_file_path::String,
     gmt_file_paths::Vector{String},
     output_directory_path::String;
-    sample_normalization_method::Union{Nothing,String} = nothing,
-    gene_set_keywords::Union{Nothing,Vector{String}} = nothing,
-    n_required_gene_set_element::Union{Nothing,Int64} = nothing,
-    statistic::String = "ks",
+    sample_normalization_method::Union{Nothing,String}=nothing,
+    gene_set_keywords::Union{Nothing,Vector{String}}=nothing,
+    n_required_gene_set_element::Union{Nothing,Int64}=nothing,
+    statistic::String="ks",
 )
 
     start_time = now()
@@ -98,7 +98,7 @@ function gsea(
 
     println("Writing $gene_set_x_sample_tsv_file_path...")
 
-    CSV.write(gene_set_x_sample_tsv_file_path, gene_set_x_sample; delim = '\t',)
+    CSV.write(gene_set_x_sample_tsv_file_path, gene_set_x_sample; delim='\t',)
 
     end_time = now()
 

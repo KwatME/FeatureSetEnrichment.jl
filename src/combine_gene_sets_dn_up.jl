@@ -13,7 +13,7 @@ function combine_gene_sets_dn_up(gene_set_x_element::DataFrame)
 
         if endswith(gene_set, "_DN") || endswith(gene_set, "_UP")
 
-            gene_set_ = gene_set[1:end-3]
+            gene_set_ = gene_set[1:end - 3]
 
             if gene_set_ in gene_set_x_element_[!, 1]
 
@@ -21,9 +21,9 @@ function combine_gene_sets_dn_up(gene_set_x_element::DataFrame)
 
             end
 
-            dn_values = gene_set_x_element[gene_sets.=="$(gene_set_)_DN", 2:end]
+            dn_values = gene_set_x_element[gene_sets .== "$(gene_set_)_DN", 2:end]
 
-            up_values = gene_set_x_element[gene_sets.=="$(gene_set_)_UP", 2:end]
+            up_values = gene_set_x_element[gene_sets .== "$(gene_set_)_UP", 2:end]
 
             if size(dn_values, 1) == 0 || size(up_values, 1) == 0
 
