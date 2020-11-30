@@ -1,5 +1,3 @@
-## Gene Set Enrichment Analysis
-
 Official GSEA module for Julia.
 
 ## Install
@@ -7,7 +5,7 @@ Official GSEA module for Julia.
 ```julia
 using Pkg: add
 
-add(url="https://github.com/kwatme/gsea.jl")
+add(url="https://github.com/KwatME/GSEA.jl")
 ```
 
 ## Use
