@@ -1,5 +1,3 @@
-Official GSEA module for Julia.
-
 ## Install
 
 ```julia
