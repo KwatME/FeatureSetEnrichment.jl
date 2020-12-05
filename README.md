@@ -1,3 +1,5 @@
+Module for gene set enrichment analysis.
+
 ## Install
 
 ```julia

@@ -2,3 +2,7 @@ name = "GSEA"
 uuid = "d7bef1b9-4643-4ed1-9ceb-ed43dd382ec0"
 authors = ["Kwat Medetgul-Ernar <kwat.me@icloud.com>"]
 version = "0.1.0"
+
+[deps]
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
+Plotly = "58dd65bb-95f3-509e-9936-c39a10fdeae7"
