@@ -1,6 +1,5 @@
 using DataFrames
 
-
 function combine_gene_sets_dn_up(gene_set_x_element::DataFrame)
 
     column_1_name = names(gene_set_x_element)[1]

@@ -4,7 +4,7 @@ include("combine_gene_sets_dn_up.jl")
 include("compute_set_enrichment.jl")
 include("read.jl")
 
-function gsea(
+function gsea_io(
     gene_x_sample_tsv_file_path::String,
     gmt_file_paths::Vector{String},
     output_directory_path::String;
