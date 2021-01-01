@@ -12,4 +12,4 @@ add(url="https://github.com/KwatME/GSEA.jl")
 
 See [examples](notebook/example.ipynb).
 
-Also, check out the [GSEA desktop application](https://github.com/KwatME/gsea).
+Also check out [the GSEA desktop application](https://github.com/KwatME/gsea).
