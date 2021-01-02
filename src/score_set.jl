@@ -1,6 +1,8 @@
+Float_ = Vector{Float64}
+
 String_ = Vector{String}
 
-function score_set(element_::Sring_, element_score_::Vector{Float64}, set_element_::Sring_)::Float64
+function score_set(element_::String_, element_score_::Float_, set_element_::String_)::Float64
     
     return
     
