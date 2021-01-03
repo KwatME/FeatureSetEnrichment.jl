@@ -9,6 +9,4 @@ include("sort_like.jl")
 include("sum_h_m.jl")
 include("sum_where_is.jl")
 
-export check_is, make_benchmark, plot_scoring_set, score_set_ks, score_set_pk, sort_like, sum_h_m, sum_where_is
-
 end

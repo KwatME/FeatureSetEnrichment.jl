@@ -15,3 +15,5 @@ function sum_where_is(v::Vector{Float64}, is_::Vector{Float64})::Float64
     return suM
 
 end
+
+export sum_where_is

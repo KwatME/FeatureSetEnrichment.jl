@@ -60,3 +60,5 @@ function score_set_pk(element_::Vector{String}, element_score_::Vector{Float64},
     return set_score_, extreme, area
 
 end
+
+export score_set_pk

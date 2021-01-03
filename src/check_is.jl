@@ -5,3 +5,5 @@ function check_is(element_::Vector{String}, set_element_::Vector{String})::Vecto
     return [Float64(haskey(set_element_to_nothing, element)) for element in element_]
 
 end
+
+export check_is

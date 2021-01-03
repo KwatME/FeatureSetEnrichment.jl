@@ -21,3 +21,5 @@ function make_benchmark(name)
     return element_, element_score_, set_element_
     
 end
+
+export make_benchmark

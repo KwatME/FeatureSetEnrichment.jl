@@ -29,3 +29,5 @@ function sum_h_m(v::Vector{Float64}, is_::Vector{Float64})::Tuple{Float64, Float
     return h, m
         
 end
+
+export sum_h_m

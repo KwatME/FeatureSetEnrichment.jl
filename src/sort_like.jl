@@ -5,3 +5,5 @@ function sort_like(v_::Tuple{Vararg{Vector}}; reverse::Bool = false)::Tuple{Vara
     return Tuple(v[sort_index_] for v in v_)
     
 end
+
+export sort_like
