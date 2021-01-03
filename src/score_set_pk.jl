@@ -1,7 +1,7 @@
 using Kraft: cumulate_sum_reverse
 using Information: compute_jsd
 
-function score_set_pk(element_::Vector{String}, element_score_::Vector{Float64}, set_element_::Vector{String})::Tuple{Vector{Float64}, Float64, Float64}
+function score_set_pk(element_::Vector{String}, element_score_::Vector{Float64}, set_element_::Vector{String}; plot::Bool = true)::Tuple{Vector{Float64}, Float64, Float64}
 
     am_ = abs.(element_score_)
 
@@ -56,6 +56,20 @@ function score_set_pk(element_::Vector{String}, element_score_::Vector{Float64},
     end
 
     area = sum(set_score_)
+
+    if plot
+
+        display(plot_scoring_set(
+            element_,
+            element_score_,
+            set_element_,
+            is_h_,
+            set_score_,
+            extreme,
+            area;
+           ))
+
+    end
 
     return set_score_, extreme, area
 

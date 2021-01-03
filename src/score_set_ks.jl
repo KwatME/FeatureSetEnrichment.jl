@@ -1,4 +1,4 @@
-function score_set_ks(element_::Vector{String}, element_score_::Vector{Float64}, set_element_::Vector{String}; track::Bool = true)::Tuple{Vector{Float64}, Float64, Float64}
+function score_set_ks(element_::Vector{String}, element_score_::Vector{Float64}, set_element_::Vector{String}; track::Bool = true, plot::Bool = true)::Tuple{Vector{Float64}, Float64, Float64}
 
     is_ = check_is(element_, set_element_)
 
@@ -55,6 +55,20 @@ function score_set_ks(element_::Vector{String}, element_score_::Vector{Float64},
         end
 
         area += set_score
+
+    end
+
+    if track && plot
+
+        display(plot_scoring_set(
+            element_,
+            element_score_,
+            set_element_,
+            is_,
+            set_score_,
+            extreme,
+            area;
+           ))
 
     end
 
