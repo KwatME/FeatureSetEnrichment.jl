@@ -21,8 +21,11 @@ function score_set_ks(element_::Vector{String}, element_score_::Vector{Float64},
     @inbounds @fastmath @simd for index in n_element:-1:1
 
         if is_[index] == 1.0
+
+            println()
            
             f = element_score_[index]
+            println(f)
             
             if f < 0.0
                 
@@ -35,6 +38,7 @@ function score_set_ks(element_::Vector{String}, element_score_::Vector{Float64},
         else
 
             set_score -= d
+            println(set_score)
 
         end
 
