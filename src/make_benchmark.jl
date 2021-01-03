@@ -1,5 +1,7 @@
 using StatsBase: sample
 
+using Kraft: shift_minimum
+
 function make_benchmark(id)
 
     split_ = split(id)
@@ -13,14 +15,16 @@ function make_benchmark(id)
         set_element_ = string.(collect(split_[2]))
     
     elseif split_[1] == "random" 
-            
+
         element_ = ["e$index" for index in 1:parse(Int, split_[2])]
-        
+
         n_element = length(element_)
+
+        v = shift_minimum(randn(convert(Int64, n_element / 2)), "0<")
+
+        element_score_ = sort([v; v])
             
-        element_score_ = sort(randn(n_element))
-            
-        set_element_ = sample(element_, convert(Int64, floor(n_element * 0.1)))
+        set_element_ = sample(element_, convert(Int64, ceil(n_element * parse(Float64, split_[3]))))
             
     end
 
