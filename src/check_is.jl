@@ -1,49 +1,7 @@
-String_ = Vector{String}
+function check_is(element_::Vector{String}, set_element_::Vector{String})::Vector{Float64}
 
-Int_ = Vector{Int64}
+    set_element_to_nothing = Dict(set_element => nothing for set_element in set_element_)
 
-function check_is(element_::String_, check_element_::String_)::Int_
+    return [Float64(haskey(set_element_to_nothing, element)) for element in element_]
 
-    n_element = length(element_)
-
-    is_ = Int_(undef, n_element)
-
-    check_element_to_nothing = Dict(check_element => nothing for check_element in check_element_)
-
-    @inbounds @fastmath @simd for index in 1:n_element
-
-        if haskey(check_element_to_nothing, element_[index])
-
-            is_[index] = 1
-
-        else
-
-            is_[index] = 0
-
-        end
-
-    end
-
-    return is_
-
-end
-
-
-function check_is(element_to_index::Dict{String, Int64}, check_element_::String_)::Int_
-
-    is_ = fill(0, length(element_to_index))
-
-    @inbounds @fastmath @simd for check_element in check_element_
-
-        index = get(element_to_index, check_element, nothing)
-
-        if index !== nothing
-
-            is_[index] = 1
-
-        end
-
-    end
-
-    return is_
 end

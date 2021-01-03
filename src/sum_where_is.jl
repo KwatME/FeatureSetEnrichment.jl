@@ -1,17 +1,17 @@
-function sum_where_is(real_::Vector{<:Real}, is_::Vector{Int64})
+function sum_where_is(v::Vector{Float64}, is_::Vector{Float64})::Float64
 
-    sum_ = eltype(real_)(0)
+    suM = 0.0
+    
+    for index in 1:length(v)
 
-    @inbounds @fastmath @simd for index in 1:length(real_)
+        if is_[index] == 1.0
 
-        if is_[index] == 1
-
-            sum_ += real_[index]
+            suM += v[index]
 
         end
 
     end
 
-    return sum_
+    return suM
 
 end
