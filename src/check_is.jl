@@ -47,5 +47,3 @@ function check_is(element_to_index::Dict{String, Int64}, check_element_::String_
 
     return is_
 end
-
-export check_is
