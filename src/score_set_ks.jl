@@ -1,4 +1,4 @@
-function score_set_ks(element_::Vector{String}, element_score_::Vector{Float64}, set_element_::Vector{String}; track::Bool = false)::Tuple{Vector{Float64}, Float64, Float64}
+function score_set_ks(element_::Vector{String}, element_score_::Vector{Float64}, set_element_::Vector{String}; track::Bool = true)::Tuple{Vector{Float64}, Float64, Float64}
 
     is_ = check_is(element_, set_element_)
 
@@ -18,7 +18,7 @@ function score_set_ks(element_::Vector{String}, element_score_::Vector{Float64},
 
     area = 0.0
 
-    @inbounds @fastmath @simd for index in 1:n_element
+    @inbounds @fastmath @simd for index in n_element:-1:1
 
         if is_[index] == 1.0
            
