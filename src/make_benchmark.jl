@@ -1,6 +1,8 @@
+using CSV
+using DataFrames
 using StatsBase: sample
 
-using Kraft: shift_minimum
+using GCTGMT: read_gmt
 
 function make_benchmark(id)
 
@@ -16,15 +18,29 @@ function make_benchmark(id)
     
     elseif split_[1] == "random" 
 
-        element_ = ["e$index" for index in 1:parse(Int, split_[2])]
+        element_ = ["e$index" for index in 1:parse(Int64, split_[2])]
 
         n_element = length(element_)
 
-        v = shift_minimum(randn(convert(Int64, n_element / 2)), "0<")
+        v = randn(convert(Int64, n_element / 2))
 
-        element_score_ = sort([v; v])
+        element_score_ = sort([.-v; v])
             
         set_element_ = sample(element_, convert(Int64, ceil(n_element * parse(Float64, split_[3]))))
+
+    elseif split_[1] == "myc"
+
+        data_directory_path = "../notebook/data/"
+
+        df = CSV.read(joinpath(data_directory_path, "gene_score.tsv"), DataFrame)
+
+        element_ = df[!, :Gene]
+
+        element_score_ = df[!, :Score]
+
+        set_to_element_ = read_gmt(joinpath(data_directory_path, "c2.all.v7.1.symbols.gmt"))
+
+        set_element_ = set_to_element_["COLLER_MYC_TARGETS_UP"]
             
     end
 
