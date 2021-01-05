@@ -1,3 +1,5 @@
+using Kraft: check_is
+
 function score_set_ks(element_::Vector{String}, element_score_::Vector{Float64}, set_element_::Vector{String}; track::Bool = true, plot::Bool = true)::Tuple{Vector{Float64}, Float64, Float64}
 
     is_ = check_is(element_, set_element_)
@@ -18,15 +20,15 @@ function score_set_ks(element_::Vector{String}, element_score_::Vector{Float64},
 
     area = 0.0
 
-    @inbounds @fastmath @simd for index in n_element:-1:1
+    @inbounds @fastmath @simd for i in n_element:-1:1
 
-        if is_[index] == 1.0
+        if is_[i] == 1.0
            
-            f = element_score_[index]
+            f = element_score_[i]
             
             if f < 0.0
                 
-                f = abs(f)
+                f = -f
                 
             end
             
@@ -40,11 +42,19 @@ function score_set_ks(element_::Vector{String}, element_score_::Vector{Float64},
 
         if track
 
-            set_score_[index] = set_score
+            set_score_[i] = set_score
 
         end
 
-        set_score_abs = abs(set_score)
+        if set_score < 0.0
+
+            set_score_abs = -set_score
+
+        else
+
+            set_score_abs = set_score
+
+        end
 
         if extreme_abs < set_score_abs
 
@@ -72,7 +82,7 @@ function score_set_ks(element_::Vector{String}, element_score_::Vector{Float64},
 
     end
 
-    return set_score_, extreme, area
+    return set_score_, extreme, area / convert(Float64, n_element)
 
 end
 

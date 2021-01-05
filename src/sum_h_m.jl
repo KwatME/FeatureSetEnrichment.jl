@@ -4,11 +4,11 @@ function sum_h_m(v::Vector{Float64}, is_::Vector{Float64})::Tuple{Float64, Float
     
     m = 0.0
     
-    for index in 1:length(v)
+    for i in 1:length(v)
         
-        if is_[index] == 1.0
+        if is_[i] == 1.0
             
-            f = v[index]
+            f = v[i]
             
             if f < 0.0
                 

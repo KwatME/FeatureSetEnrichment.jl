@@ -10,7 +10,7 @@ function plot_scoring_set(
     is_::Vector{Float64},
     set_score_::Vector{Float64},
     extreme::Float64,
-    area::Float64,
+    area::Float64;
     width::Real = 800,
     height::Real = 500,
     line_width::Real = 2.0,
@@ -83,15 +83,15 @@ function plot_scoring_set(
             ),
             merge(
                 y_annotation_template,
-                attr(y = get_center(yaxis3_domain), text = "<b>Set Score</b>"),
+                attr(y = get_center(yaxis3_domain...), text = "<b>Set Score</b>"),
             ),
             merge(
                 y_annotation_template,
-                attr(y = get_center(yaxis2_domain), text = "<b>Set</b>"),
+                attr(y = get_center(yaxis2_domain...), text = "<b>Set</b>"),
             ),
             merge(
                 y_annotation_template,
-                attr(y = get_center(yaxis1_domain), text = "<b>$element_value_name</b>"),
+                attr(y = get_center(yaxis1_domain...), text = "<b>$element_value_name</b>"),
             ),
         ],
     )

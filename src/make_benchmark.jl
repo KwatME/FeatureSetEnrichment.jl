@@ -1,42 +1,43 @@
-using CSV
-using DataFrames
+using CSV: read
+using DataFrames: DataFrame
 using StatsBase: sample
 
 using GCTGMT: read_gmt
+using Kraft: list_card
 
-function make_benchmark(id)
+function make_benchmark(id::String)::Tuple{Vector{String}, Vector{Float64}, Vector{String}}
 
     split_ = split(id)
     
     if split_[1] == "card"
 
-        element_ = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "X"]
+        element_ = list_card()
 
-        element_score_ = float.(collect(-7:7))
+        element_score_ = convert.(Float64, -7:7)
 
         set_element_ = string.(collect(split_[2]))
     
     elseif split_[1] == "random" 
 
-        element_ = ["e$index" for index in 1:parse(Int64, split_[2])]
+        element_ = ["e$i" for i in 1:parse(Int64, split_[2])]
 
         n_element = length(element_)
 
         v = randn(convert(Int64, n_element / 2))
 
         element_score_ = sort([.-v; v])
-            
-        set_element_ = sample(element_, convert(Int64, ceil(n_element * parse(Float64, split_[3]))))
+
+        set_element_ = sample(element_, parse(Int64, split_[3]))
 
     elseif split_[1] == "myc"
 
         data_directory_path = "../notebook/data/"
 
-        df = CSV.read(joinpath(data_directory_path, "gene_score.tsv"), DataFrame)
+        df = read(joinpath(data_directory_path, "gene_score.tsv"), DataFrame)
 
-        element_ = df[!, :Gene]
+        element_ = df[!, Symbol("Gene")]
 
-        element_score_ = df[!, :Score]
+        element_score_ = df[!, Symbol("Score")]
 
         set_to_element_ = read_gmt(joinpath(data_directory_path, "c2.all.v7.1.symbols.gmt"))
 
