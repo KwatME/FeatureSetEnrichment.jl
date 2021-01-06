@@ -1,4 +1,4 @@
-module GSEA
+module SEA
 
 include("get_extreme_and_area.jl")
 include("make_benchmark.jl")

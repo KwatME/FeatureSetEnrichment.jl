@@ -1,15 +1,15 @@
-Module for gene set enrichment analysis.
+Module for set enrichment analysis.
 
 ## Install
 
 ```julia
 using Pkg: add
 
-add(url="https://github.com/KwatME/GSEA.jl")
+add(url="https://github.com/KwatME/SEA.jl")
 ```
 
 ## Use
 
 See [examples](notebook/example.ipynb).
 
-#### Check out [the GSEA desktop application](https://github.com/KwatME/gsea).
+#### Check out the [python interface](https://github.com/KwatME/sea) and the [GSEA application](https://github.com/KwatME/gsea).
