@@ -12,7 +12,7 @@ using Pkg: add
 add(url="https://github.com/KwatME/SEA.jl")
 ```
 
-## Test
+Test
 
 ```sh
 julia --eval 'using SEA; score_set(["a", "b", "c"], [-1.,0.,1.], ["a", "b"])'
@@ -22,4 +22,6 @@ julia --eval 'using SEA; score_set(["a", "b", "c"], [-1.,0.,1.], ["a", "b"])'
 
 See [examples](notebook/example.ipynb).
 
-#### Check out the [python interface](https://github.com/KwatME/sea) and the [GSEA application](https://github.com/KwatME/gsea).
+#### For using the the python interface, check out [sea](https://github.com/KwatME/sea).
+
+#### For using the desktop application, check out [gsea](https://github.com/KwatME/gsea).
