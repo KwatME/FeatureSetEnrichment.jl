@@ -2,6 +2,10 @@ Module for set enrichment analysis.
 
 ## Install
 
+```sh
+julia
+```
+
 ```julia
 using Pkg: add
 
