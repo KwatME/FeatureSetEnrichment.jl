@@ -1,7 +1,7 @@
 using Printf: @sprintf
 using Plotly: Layout, attr, plot, scatter
 
-using Kraft: get_center
+#using Kraft: get_center
 
 function plot_scoring_set(
     element_::Vector{String},
