@@ -1,8 +1,14 @@
 using Plotly: Layout
 
+
 using Information: compute_jsd
+
+
 using Kraft: cumulate_sum_reverse, sort_like
+
+
 using Plot: plot_x_y
+
 
 function score_set_new(
     element_::Vector{String},
@@ -12,22 +18,30 @@ function score_set_new(
     plot::Bool = true,
 )::Dict{String, Tuple{Vector{Float64}, Float64, Float64}}
 
+
     #
     d = Dict{String, Tuple{Vector{Float64}, Float64, Float64}}()
+
 
     #
     layout = Layout(xaxis_title = "Element", xaxis_ticktext = element_)
 
+
     if length(element_) < 100
+
 
         layout = merge(layout, Layout(xaxis_tickvals = 1:length(element_)))
 
+
     end
+
 
     #
     if sort
 
+
         element_score_, element_ = sort_like((element_score_, element_))
+
 
     end
 
@@ -39,15 +53,19 @@ function score_set_new(
     #
     is_h_ = check_is(element_, set_element_)
 
+
     is_m_ = 1.0 .- is_h_
 
 
     #
     is_h_am_ = is_h_ .* am_
 
+
     is_h_p_ = is_h_am_ / sum(is_h_am_)
 
+
     is_h_p_cr_ = cumsum(is_h_p_)
+
 
     is_h_p_cl_ = cumulate_sum_reverse(is_h_p_)
 
@@ -55,7 +73,9 @@ function score_set_new(
     #
     is_m_p_ = is_m_ / sum(is_m_)
 
+
     is_m_p_cr_ = cumsum(is_m_p_)
+
 
     is_m_p_cl_ = cumulate_sum_reverse(is_m_p_)
 
@@ -63,10 +83,13 @@ function score_set_new(
     #
     small_number = eps()
 
+
     #
     am_p_ = am_ / sum(am_)
 
+
     am_p_cr_ = cumsum(am_p_) .+ small_number
+
 
     am_p_cl_ = cumulate_sum_reverse(am_p_) .+ small_number
 
@@ -74,9 +97,12 @@ function score_set_new(
     #
     am_h_ = am_ .* is_h_
 
+
     am_h_p_ = am_h_ / sum(am_h_)
 
+
     am_h_p_cr_ = cumsum(am_h_p_) .+ small_number
+
 
     am_h_p_cl_ = cumulate_sum_reverse(am_h_p_) .+ small_number
 
@@ -84,9 +110,12 @@ function score_set_new(
     #
     am_m_ = am_ .* is_m_
 
+
     am_m_p_ = am_m_ / sum(am_m_)
 
+
     am_m_p_cr_ = cumsum(am_m_p_) .+ small_number
+
 
     am_m_p_cl_ = cumulate_sum_reverse(am_m_p_) .+ small_number
 
@@ -102,15 +131,20 @@ function score_set_new(
     #
     set_score_ = is_h_p_cl_ - is_m_p_cl_
 
+
     d["classic"] = (set_score_, get_extreme_and_area(set_score_)...)
+
 
     #
     set_score_ = jsd_l_ - jsd_r_
 
+
     d["am c jsd <->"] = (set_score_, get_extreme_and_area(set_score_)...)
+
 
     #
     if plot
+
 
         display(
             plot_x_y(
@@ -119,12 +153,14 @@ function score_set_new(
             ),
         )
 
+
         display(
             plot_x_y(
                 (am_,);
                 layout = merge(layout, Layout(yaxis_title = "Amplitude")),
             ),
         )
+
 
         display(
             plot_x_y(
@@ -134,6 +170,7 @@ function score_set_new(
             ),
         )
 
+
         display(
             plot_x_y(
                 (is_h_p_, is_h_p_cr_, is_h_p_cl_);
@@ -141,6 +178,7 @@ function score_set_new(
                 layout = merge(layout, Layout(title = "Is Hit * Amplitude")),
             ),
         )
+
 
         display(
             plot_x_y(
@@ -150,6 +188,7 @@ function score_set_new(
             ),
         )
 
+
         display(
             plot_x_y(
                 (am_p_, am_p_cr_, am_p_cl_);
@@ -157,6 +196,7 @@ function score_set_new(
                 layout = merge(layout, Layout(title = "Amplitude")),
             ),
         )
+
 
         display(
             plot_x_y(
@@ -166,6 +206,7 @@ function score_set_new(
             ),
         )
 
+
         display(
             plot_x_y(
                 (am_m_p_, am_m_p_cr_, am_m_p_cl_);
@@ -174,6 +215,7 @@ function score_set_new(
             ),
         )
 
+
         display(
             plot_x_y(
                 (am_p_cl_, am_h_p_cl_, am_m_p_cl_);
@@ -181,6 +223,7 @@ function score_set_new(
                 layout = merge(layout, Layout(title = "CL(P)")),
             ),
         )
+
 
         display(
             plot_x_y(
@@ -192,6 +235,7 @@ function score_set_new(
             ),
         )
 
+
         display(
             plot_x_y(
                 (am_p_cr_, am_h_p_cr_, am_m_p_cr_);
@@ -199,6 +243,7 @@ function score_set_new(
                 layout = merge(layout, Layout(title = "CR(P)")),
             ),
         )
+
 
         display(
             plot_x_y(
@@ -210,7 +255,10 @@ function score_set_new(
             ),
         )
 
+
         for (k, (set_score_, extreme, area)) in d
+
+
             display(
                 plot_scoring_set(
                     element_,
@@ -223,12 +271,18 @@ function score_set_new(
                     title_text = k,
                 ),
             )
+
+
         end
+
 
     end
 
+
     return d
 
+
 end
+
 
 export score_set_new

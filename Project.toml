@@ -1,4 +1,4 @@
-name = "ScoreSet"
+name = "FeatureSetEnrichment"
 uuid = "d7bef1b9-4643-4ed1-9ceb-ed43dd382ec0"
 authors = ["Kwat Medetgul-Ernar <kwat.me@icloud.com>"]
 version = "0.1.0"
@@ -6,6 +6,7 @@ version = "0.1.0"
 [deps]
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+GCTGMT = "9a662218-b2a5-48bf-9802-3ede4e75343d"
 Plotly = "58dd65bb-95f3-509e-9936-c39a10fdeae7"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"

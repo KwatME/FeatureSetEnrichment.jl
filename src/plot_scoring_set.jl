@@ -1,7 +1,11 @@
 using Printf: @sprintf
+
+
 using Plotly: Layout, attr, plot, scatter
 
+
 #using Kraft: get_center
+#
 
 function plot_scoring_set(
     element_::Vector{String},
@@ -20,13 +24,18 @@ function plot_scoring_set(
     axis_title_font_size::Real = 12,
 )::Any
 
+
     n_element = length(element_)
+
 
     yaxis1_domain = (0.0, 0.24)
 
+
     yaxis2_domain = (0.24, 0.32)
 
+
     yaxis3_domain = (0.32, 1.0)
+
 
     annotation_template = attr(
         xref = "paper",
@@ -35,13 +44,16 @@ function plot_scoring_set(
         showarrow = false,
     )
 
+
     x_annotation_template =
         merge(annotation_template, attr(xanchor = "center", x = 0.5))
+
 
     y_annotation_template = merge(
         annotation_template,
         attr(xanchor = "right", x = -0.08, font_size = axis_title_font_size),
     )
+
 
     layout = Layout(
         width = width,
@@ -99,7 +111,9 @@ function plot_scoring_set(
         ],
     )
 
+
     x = 1:n_element
+
 
     element_score_trace = scatter(
         name = "Element Score",
@@ -111,7 +125,9 @@ function plot_scoring_set(
         fill = "tozeroy",
     )
 
+
     set_element_bit = BitVector(is_)
+
 
     set_element_trace = scatter(
         name = "Set",
@@ -127,9 +143,12 @@ function plot_scoring_set(
         hoverinfo = "name+x+text",
     )
 
+
     extreme = @sprintf "%.2e" extreme
 
+
     area = @sprintf "%.2e" area
+
 
     push!(
         layout["annotations"],
@@ -147,6 +166,7 @@ function plot_scoring_set(
         ),
     )
 
+
     set_score_trace = scatter(
         name = "Set Score",
         yaxis = "y3",
@@ -158,11 +178,14 @@ function plot_scoring_set(
         fill = "tozeroy",
     )
 
+
     return plot(
         [element_score_trace, set_element_trace, set_score_trace],
         layout,
     )
 
+
 end
+
 
 export plot_scoring_set
