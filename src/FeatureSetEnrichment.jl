@@ -1,4 +1,4 @@
-module FeatureSetEnrichment.jl
+module FeatureSetEnrichment
 
 
 include("get_extreme_and_area.jl")
