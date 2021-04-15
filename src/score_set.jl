@@ -15,11 +15,11 @@ function score_set(
     d = 1.0 / m_sum
 
     set_score = 0.0
-    
+
     n_element = length(element_)
 
     set_score_ = Vector{Float64}(undef, n_element)
-    
+
     extreme = 0.0
 
     extreme_abs = 0.0
@@ -27,17 +27,16 @@ function score_set(
     area = 0.0
 
     @inbounds @fastmath @simd for i in n_element:-1:1
-
         if is_[i] == 1.0
-           
+
             f = score_[i]
-            
+
             if f < 0.0
-                
+
                 f = -f
-                
+
             end
-            
+
             set_score += f / h_sum
 
         else
@@ -76,15 +75,17 @@ function score_set(
 
     if plot
 
-        display(plot_scoring_set(
-            element_,
-            score_,
-            set_element_,
-            is_,
-            set_score_,
-            extreme,
-            area;
-           ))
+        display(
+            plot_scoring_set(
+                element_,
+                score_,
+                set_element_,
+                is_,
+                set_score_,
+                extreme,
+                area,
+            ),
+        )
 
     end
 
@@ -142,7 +143,6 @@ function score_set(
     set_to_result = Dict{String, Tuple{Vector{Float64}, Float64, Float64}}()
 
     for (set, set_element_) in set_to_element_
-
         set_to_result[set] = score_set(
             element_,
             score_,
@@ -168,7 +168,6 @@ function score_set(
     set_x_sample = DataFrame(:Set => sort(collect(keys(set_to_element_))))
 
     for sample in names(element_x_sample)[2:end]
-
         is_good_ = findall(!ismissing, element_x_sample[!, sample])
 
         set_to_result = score_set(
@@ -178,7 +177,8 @@ function score_set(
             sort = true,
         )
 
-        set_x_sample[!, sample] = collect(set_to_result[set][end] for set in set_x_sample[!, :Set])
+        set_x_sample[!, sample] =
+            collect(set_to_result[set][end] for set in set_x_sample[!, :Set])
 
     end
 

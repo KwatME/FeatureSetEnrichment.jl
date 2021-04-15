@@ -19,9 +19,9 @@ function score_set_new(
     layout = Layout(xaxis_title = "Element", xaxis_ticktext = element_)
 
     if length(element_) < 100
-        
+
         layout = merge(layout, Layout(xaxis_tickvals = 1:length(element_)))
-        
+
     end
 
     #
@@ -59,7 +59,7 @@ function score_set_new(
 
     is_m_p_cl_ = cumulate_sum_reverse(is_m_p_)
 
-    
+
     #
     small_number = eps()
 
@@ -112,86 +112,117 @@ function score_set_new(
     #
     if plot
 
-        display(plot_x_y(
-            (element_score_,);
-            layout = merge(layout, Layout(yaxis_title = "Score")),
-        ))
+        display(
+            plot_x_y(
+                (element_score_,);
+                layout = merge(layout, Layout(yaxis_title = "Score")),
+            ),
+        )
 
-        display(plot_x_y(
-            (am_,);
-            layout = merge(layout, Layout(yaxis_title = "Amplitude")),
-        ))
+        display(
+            plot_x_y(
+                (am_,);
+                layout = merge(layout, Layout(yaxis_title = "Amplitude")),
+            ),
+        )
 
-        display(plot_x_y(
-            (is_h_, is_m_);
-            name_ = ("Hit", "Miss"),
-            layout = merge(layout, Layout(title = "Is")),
-        ))
+        display(
+            plot_x_y(
+                (is_h_, is_m_);
+                name_ = ("Hit", "Miss"),
+                layout = merge(layout, Layout(title = "Is")),
+            ),
+        )
 
-        display(plot_x_y(
-            (is_h_p_, is_h_p_cr_, is_h_p_cl_);
-            name_ = ("P", "CR(P)", "CL(P)"),
-            layout = merge(layout, Layout(title = "Is Hit * Amplitude")),
-        ))
+        display(
+            plot_x_y(
+                (is_h_p_, is_h_p_cr_, is_h_p_cl_);
+                name_ = ("P", "CR(P)", "CL(P)"),
+                layout = merge(layout, Layout(title = "Is Hit * Amplitude")),
+            ),
+        )
 
-        display(plot_x_y(
-            (is_m_p_, is_m_p_cr_, is_m_p_cl_);
-            name_ = ("P", "CR(P)", "CL(P)"),
-            layout = merge(layout, Layout(title = "Is Miss")),
-        ))
+        display(
+            plot_x_y(
+                (is_m_p_, is_m_p_cr_, is_m_p_cl_);
+                name_ = ("P", "CR(P)", "CL(P)"),
+                layout = merge(layout, Layout(title = "Is Miss")),
+            ),
+        )
 
-        display(plot_x_y(
-            (am_p_, am_p_cr_, am_p_cl_);
-            name_ = ("P", "CR(P)", "CL(P)"),
-            layout = merge(layout, Layout(title = "Amplitude")),
-        ))
+        display(
+            plot_x_y(
+                (am_p_, am_p_cr_, am_p_cl_);
+                name_ = ("P", "CR(P)", "CL(P)"),
+                layout = merge(layout, Layout(title = "Amplitude")),
+            ),
+        )
 
-        display(plot_x_y(
-            (am_h_p_, am_h_p_cr_, am_h_p_cl_);
-            name_ = ("P", "CR(P)", "CL(P)"),
-            layout = merge(layout, Layout(title = "Amplitude Hit")),
-       ))
+        display(
+            plot_x_y(
+                (am_h_p_, am_h_p_cr_, am_h_p_cl_);
+                name_ = ("P", "CR(P)", "CL(P)"),
+                layout = merge(layout, Layout(title = "Amplitude Hit")),
+            ),
+        )
 
-        display(plot_x_y(
-            (am_m_p_, am_m_p_cr_, am_m_p_cl_);
-            name_ = ("P", "CR(P)", "CL(P)"),
-            layout = merge(layout, Layout(title = "Amplitude Miss")),
-       ))
+        display(
+            plot_x_y(
+                (am_m_p_, am_m_p_cr_, am_m_p_cl_);
+                name_ = ("P", "CR(P)", "CL(P)"),
+                layout = merge(layout, Layout(title = "Amplitude Miss")),
+            ),
+        )
 
-        display(plot_x_y(
-            (am_p_cl_, am_h_p_cl_, am_m_p_cl_);
-            name_ = ("Amplitude", "Hit", "Miss"),
-            layout = merge(layout, Layout(title = "CL(P)")),
-       ))
+        display(
+            plot_x_y(
+                (am_p_cl_, am_h_p_cl_, am_m_p_cl_);
+                name_ = ("Amplitude", "Hit", "Miss"),
+                layout = merge(layout, Layout(title = "CL(P)")),
+            ),
+        )
 
-        display(plot_x_y(
-            (jsd_l_,);
-            layout = merge(layout, Layout(title = "JSD L", yaxis_title = "Set Score")),
-       ))
+        display(
+            plot_x_y(
+                (jsd_l_,);
+                layout = merge(
+                    layout,
+                    Layout(title = "JSD L", yaxis_title = "Set Score"),
+                ),
+            ),
+        )
 
-        display(plot_x_y(
-            (am_p_cr_, am_h_p_cr_, am_m_p_cr_);
-            name_ = ("Amplitude", "Hit", "Miss"),
-            layout = merge(layout, Layout(title = "CR(P)")),
-        ))
+        display(
+            plot_x_y(
+                (am_p_cr_, am_h_p_cr_, am_m_p_cr_);
+                name_ = ("Amplitude", "Hit", "Miss"),
+                layout = merge(layout, Layout(title = "CR(P)")),
+            ),
+        )
 
-        display(plot_x_y(
-            (jsd_r_,);
-            layout = merge(layout, Layout(title = "JSD R", yaxis_title = "Set Score")),
-        ))
+        display(
+            plot_x_y(
+                (jsd_r_,);
+                layout = merge(
+                    layout,
+                    Layout(title = "JSD R", yaxis_title = "Set Score"),
+                ),
+            ),
+        )
 
         for (k, (set_score_, extreme, area)) in d
-        
-            display(plot_scoring_set(
-                element_,
-                element_score_,
-                set_element_,
-                is_h_,
-                set_score_,
-                extreme,
-                area;
-                title_text = k,
-               ))
+            display(
+                plot_scoring_set(
+                    element_,
+                    element_score_,
+                    set_element_,
+                    is_h_,
+                    set_score_,
+                    extreme,
+                    area;
+                    title_text = k,
+                ),
+            )
         end
 
     end

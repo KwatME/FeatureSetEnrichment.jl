@@ -35,14 +35,12 @@ function plot_scoring_set(
         showarrow = false,
     )
 
-    x_annotation_template = merge(
-        annotation_template,
-        attr(xanchor = "center", x = 0.5),
-    )
+    x_annotation_template =
+        merge(annotation_template, attr(xanchor = "center", x = 0.5))
 
     y_annotation_template = merge(
         annotation_template,
-        attr(xanchor="right", x = -0.08, font_size = axis_title_font_size),
+        attr(xanchor = "right", x = -0.08, font_size = axis_title_font_size),
     )
 
     layout = Layout(
@@ -50,13 +48,11 @@ function plot_scoring_set(
         height = height,
         margin_l = width * 0.24,
         margin_t = height * 0.24,
-
         legend_orientation = "h",
         legend_x = 0.5,
         legend_y = -0.32,
         legend_xanchor = "center",
         legend_yanchor = "middle",
-
         xaxis1_zeroline = false,
         #xaxis1_showspikes = true,
         #xaxis1_spikemode = "across",
@@ -64,26 +60,30 @@ function plot_scoring_set(
 
         yaxis3_domain = yaxis3_domain,
         yaxis3_showline = true,
-
         yaxis2_domain = yaxis2_domain,
         yaxis2_showticklabels = false,
         yaxis2_showgrid = false,
-
         yaxis1_domain = yaxis1_domain,
         yaxis1_showline = true,
         annotations = [
             merge(
                 x_annotation_template,
-                attr(y = 1.24, text = "<b>$title_text</b>", font_size = title_font_size),
-            ),
-            merge(
-                x_annotation_template,
-                attr(y = -0.1, text = "<b>Element Rank (n=$n_element)</b>",
+                attr(
+                    y = 1.24,
+                    text = "<b>$title_text</b>",
+                    font_size = title_font_size,
                 ),
             ),
             merge(
+                x_annotation_template,
+                attr(y = -0.1, text = "<b>Element Rank (n=$n_element)</b>"),
+            ),
+            merge(
                 y_annotation_template,
-                attr(y = get_center(yaxis3_domain...), text = "<b>Set Score</b>"),
+                attr(
+                    y = get_center(yaxis3_domain...),
+                    text = "<b>Set Score</b>",
+                ),
             ),
             merge(
                 y_annotation_template,
@@ -91,7 +91,10 @@ function plot_scoring_set(
             ),
             merge(
                 y_annotation_template,
-                attr(y = get_center(yaxis1_domain...), text = "<b>$element_value_name</b>"),
+                attr(
+                    y = get_center(yaxis1_domain...),
+                    text = "<b>$element_value_name</b>",
+                ),
             ),
         ],
     )
@@ -134,7 +137,10 @@ function plot_scoring_set(
             x_annotation_template,
             attr(
                 y = 1.12,
-                text = join(("<b>Extreme = $extreme</b>", "<b>Area = $area</b>"), "     "),
+                text = join(
+                    ("<b>Extreme = $extreme</b>", "<b>Area = $area</b>"),
+                    "     ",
+                ),
                 font_size = title_font_size * 0.56,
                 font_color = "#2a603b",
             ),
@@ -152,7 +158,10 @@ function plot_scoring_set(
         fill = "tozeroy",
     )
 
-    plot([element_score_trace, set_element_trace, set_score_trace], layout)
+    return plot(
+        [element_score_trace, set_element_trace, set_score_trace],
+        layout,
+    )
 
 end
 
