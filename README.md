@@ -24,4 +24,4 @@ See [examples](notebook/example.ipynb).
 
 ### For using the the python interface, check out [FeatureSetEnrichment.py](https://github.com/KwatME/FeatureSetEnrichment.py).
 
-### For using the desktop application, check out [GSEA.app](https://github.com/KwatME/GSEA.js).
+### For using the desktop application, check out [GSEA.js](https://github.com/KwatME/GSEA.js).
