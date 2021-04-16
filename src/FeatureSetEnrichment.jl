@@ -2,11 +2,11 @@ module FeatureSetEnrichment
 
 include("_plot.jl")
 
+include("_score_set.jl")
+
 include("make_benchmark.jl")
 
 include("score_set.jl")
-
-include("score_sets.jl")
 
 include("score_set_new.jl")
 

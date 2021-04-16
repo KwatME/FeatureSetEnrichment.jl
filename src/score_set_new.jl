@@ -2,7 +2,8 @@ using Plotly: Layout
 
 using Information: compute_jsd
 using Plot: plot_x_y
-using Support: cumulate_sum_reverse, get_extreme_and_area, sort_like
+using Support:
+    cumulate_sum_reverse, get_extreme_and_area, sort_like
 
 function score_set_new(
     element_::Vector{String},
@@ -16,18 +17,25 @@ function score_set_new(
     d = Dict{String, Tuple{Vector{Float64}, Float64, Float64}}()
 
     #
-    layout = Layout(xaxis_title = "Element", xaxis_ticktext = element_)
+    layout = Layout(
+        xaxis_title = "Element",
+        xaxis_ticktext = element_,
+    )
 
     if length(element_) < 100
 
-        layout = merge(layout, Layout(xaxis_tickvals = 1:length(element_)))
+        layout = merge(
+            layout,
+            Layout(xaxis_tickvals = 1:length(element_)),
+        )
 
     end
 
     #
     if sort
 
-        element_score_, element_ = sort_like((element_score_, element_))
+        element_score_, element_ =
+            sort_like((element_score_, element_))
 
     end
 
@@ -92,12 +100,14 @@ function score_set_new(
     #
     set_score_ = is_h_p_cl_ - is_m_p_cl_
 
-    d["classic"] = (set_score_, get_extreme_and_area(set_score_)...)
+    d["classic"] =
+        (set_score_, get_extreme_and_area(set_score_)...)
 
     #
     set_score_ = jsd_l_ - jsd_r_
 
-    d["am c jsd <->"] = (set_score_, get_extreme_and_area(set_score_)...)
+    d["am c jsd <->"] =
+        (set_score_, get_extreme_and_area(set_score_)...)
 
     #
     if plot
@@ -105,14 +115,20 @@ function score_set_new(
         display(
             plot_x_y(
                 (element_score_,);
-                layout = merge(layout, Layout(yaxis_title = "Score")),
+                layout = merge(
+                    layout,
+                    Layout(yaxis_title = "Score"),
+                ),
             ),
         )
 
         display(
             plot_x_y(
                 (am_,);
-                layout = merge(layout, Layout(yaxis_title = "Amplitude")),
+                layout = merge(
+                    layout,
+                    Layout(yaxis_title = "Amplitude"),
+                ),
             ),
         )
 
@@ -128,7 +144,10 @@ function score_set_new(
             plot_x_y(
                 (is_h_p_, is_h_p_cr_, is_h_p_cl_);
                 name_ = ("P", "CR(P)", "CL(P)"),
-                layout = merge(layout, Layout(title = "Is Hit * Amplitude")),
+                layout = merge(
+                    layout,
+                    Layout(title = "Is Hit * Amplitude"),
+                ),
             ),
         )
 
@@ -136,7 +155,10 @@ function score_set_new(
             plot_x_y(
                 (is_m_p_, is_m_p_cr_, is_m_p_cl_);
                 name_ = ("P", "CR(P)", "CL(P)"),
-                layout = merge(layout, Layout(title = "Is Miss")),
+                layout = merge(
+                    layout,
+                    Layout(title = "Is Miss"),
+                ),
             ),
         )
 
@@ -144,7 +166,10 @@ function score_set_new(
             plot_x_y(
                 (am_p_, am_p_cr_, am_p_cl_);
                 name_ = ("P", "CR(P)", "CL(P)"),
-                layout = merge(layout, Layout(title = "Amplitude")),
+                layout = merge(
+                    layout,
+                    Layout(title = "Amplitude"),
+                ),
             ),
         )
 
@@ -152,7 +177,10 @@ function score_set_new(
             plot_x_y(
                 (am_h_p_, am_h_p_cr_, am_h_p_cl_);
                 name_ = ("P", "CR(P)", "CL(P)"),
-                layout = merge(layout, Layout(title = "Amplitude Hit")),
+                layout = merge(
+                    layout,
+                    Layout(title = "Amplitude Hit"),
+                ),
             ),
         )
 
@@ -160,7 +188,10 @@ function score_set_new(
             plot_x_y(
                 (am_m_p_, am_m_p_cr_, am_m_p_cl_);
                 name_ = ("P", "CR(P)", "CL(P)"),
-                layout = merge(layout, Layout(title = "Amplitude Miss")),
+                layout = merge(
+                    layout,
+                    Layout(title = "Amplitude Miss"),
+                ),
             ),
         )
 
@@ -177,7 +208,10 @@ function score_set_new(
                 (jsd_l_,);
                 layout = merge(
                     layout,
-                    Layout(title = "JSD L", yaxis_title = "Set Score"),
+                    Layout(
+                        title = "JSD L",
+                        yaxis_title = "Set Score",
+                    ),
                 ),
             ),
         )
@@ -195,7 +229,10 @@ function score_set_new(
                 (jsd_r_,);
                 layout = merge(
                     layout,
-                    Layout(title = "JSD R", yaxis_title = "Set Score"),
+                    Layout(
+                        title = "JSD R",
+                        yaxis_title = "Set Score",
+                    ),
                 ),
             ),
         )

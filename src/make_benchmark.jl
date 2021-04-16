@@ -35,14 +35,21 @@ function make_benchmark(
 
         data_directory_path = "../notebook/data/"
 
-        df = read(joinpath(data_directory_path, "gene_score.tsv"), DataFrame)
+        df = read(
+            joinpath(data_directory_path, "gene_score.tsv"),
+            DataFrame,
+        )
 
         element_ = df[!, Symbol("Gene")]
 
         score_ = df[!, Symbol("Score")]
 
-        set_element_ =
-            read_gmt(joinpath(data_directory_path, "c2.all.v7.1.symbols.gmt"))["COLLER_MYC_TARGETS_UP"]
+        set_element_ = read_gmt(
+            joinpath(
+                data_directory_path,
+                "c2.all.v7.1.symbols.gmt",
+            ),
+        )["COLLER_MYC_TARGETS_UP"]
 
     end
 
