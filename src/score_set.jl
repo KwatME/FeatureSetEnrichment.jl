@@ -10,7 +10,7 @@ function score_set(
     plot::Bool = true,
 )::Tuple{Vector{Float64}, Float64, Float64}
 
-    h_sum, m_sum = sum_h_m(score_, is_)
+    h_sum, m_sum = sum_h_absolute_n_m(score_, is_)
 
     d = 1.0 / m_sum
 
@@ -76,7 +76,7 @@ function score_set(
     if plot
 
         display(
-            plot_scoring_set(
+            _plot(
                 element_,
                 score_,
                 set_element_,

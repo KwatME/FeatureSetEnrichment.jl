@@ -2,16 +2,16 @@ using CSV
 using DataFrames: DataFrame
 
 function score_sets(
-    gene_x_sample_path::String,
+    element_x_sample_path::String,
     gmt_path_::Vector{String},
     directory_path::String,
 )::DataFrame
 
-    gene_set_x_sample = DataFrame()
+    element_set_x_sample = DataFrame()
 
-    # write gene_set_x_sample directory_path
+    # write element_set_x_sample directory_path
 
-    return gene_set_x_sample
+    return element_set_x_sample
 
 end
 

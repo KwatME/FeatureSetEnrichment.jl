@@ -3,7 +3,7 @@ using Plotly: Layout, attr, plot, scatter
 
 using Support: get_center
 
-function plot_scoring_set(
+function _plot(
     element_::Vector{String},
     element_score_::Vector{Float64},
     set_element_::Vector{String},
@@ -164,4 +164,4 @@ function plot_scoring_set(
 
 end
 
-export plot_scoring_set
+export _plot

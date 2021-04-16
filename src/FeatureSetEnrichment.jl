@@ -1,8 +1,8 @@
 module FeatureSetEnrichment
 
-include("make_benchmark.jl")
+include("_plot.jl")
 
-include("plot_scoring_set.jl")
+include("make_benchmark.jl")
 
 include("score_set.jl")
 
@@ -10,6 +10,6 @@ include("score_sets.jl")
 
 include("score_set_new.jl")
 
-include("sum_h_m.jl")
+include("sum_h_absolute_n_m.jl")
 
 end

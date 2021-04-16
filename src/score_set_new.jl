@@ -202,7 +202,7 @@ function score_set_new(
 
         for (k, (set_score_, extreme, area)) in d
             display(
-                plot_scoring_set(
+                _plot(
                     element_,
                     element_score_,
                     set_element_,

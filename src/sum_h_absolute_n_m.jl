@@ -1,4 +1,4 @@
-function sum_h_m(
+function sum_h_absolute_n_m(
     v::Vector{Float64},
     is_::Vector{Float64},
 )::Tuple{Float64, Float64}
@@ -32,4 +32,4 @@ function sum_h_m(
 
 end
 
-export sum_h_m
+export sum_h_absolute_n_m

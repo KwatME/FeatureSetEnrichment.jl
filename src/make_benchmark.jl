@@ -15,7 +15,9 @@ function make_benchmark(
 
         element_ = list_card()
 
-        score_ = convert.(Float64, -7:7)
+        n = length(element_) / 2
+
+        score_ = convert.(Float64, ceil(-n):floor(n))
 
         set_element_ = string.(collect(split_[2]))
 
