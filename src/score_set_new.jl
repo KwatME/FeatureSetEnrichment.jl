@@ -6,10 +6,14 @@ using Support:
     cumulate_sum_reverse, get_extreme_and_area, sort_like
 
 function score_set_new(
+    #
     element_::Vector{String},
     element_score_::Vector{Float64},
+    #
     set_element_::Vector{String};
+    #
     sort::Bool = true,
+    #
     plot::Bool = true,
 )::Dict{String, Tuple{Vector{Float64}, Float64, Float64}}
 
@@ -17,16 +21,17 @@ function score_set_new(
     d = Dict{String, Tuple{Vector{Float64}, Float64, Float64}}()
 
     #
-    layout = Layout(
-        xaxis_title = "Element",
-        xaxis_ticktext = element_,
-    )
+    layout = Layout(xaxis_title = "Element")
 
+    #
     if length(element_) < 100
 
         layout = merge(
             layout,
-            Layout(xaxis_tickvals = 1:length(element_)),
+            Layout(
+                xaxis_tickvals = 1:length(element_),
+                xaxis_ticktext = element_,
+            ),
         )
 
     end
@@ -40,7 +45,7 @@ function score_set_new(
     end
 
     #
-    am_ = abs.(element_score_)
+    a_ = abs.(element_score_)
 
     #
     is_h_ = check_is(element_, set_element_)
@@ -48,9 +53,10 @@ function score_set_new(
     is_m_ = 1.0 .- is_h_
 
     #
-    is_h_am_ = is_h_ .* am_
+    is_h_a_ = is_h_ .* a_
 
-    is_h_p_ = is_h_am_ / sum(is_h_am_)
+    #
+    is_h_p_ = is_h_a_ / sum(is_h_a_)
 
     is_h_p_cr_ = cumsum(is_h_p_)
 
@@ -64,38 +70,38 @@ function score_set_new(
     is_m_p_cl_ = cumulate_sum_reverse(is_m_p_)
 
     #
-    small_number = eps()
+    e = eps()
 
     #
-    am_p_ = am_ / sum(am_)
+    a_p_ = a_ / sum(a_)
 
-    am_p_cr_ = cumsum(am_p_) .+ small_number
+    a_p_cr_ = cumsum(a_p_) .+ e
 
-    am_p_cl_ = cumulate_sum_reverse(am_p_) .+ small_number
-
-    #
-    am_h_ = am_ .* is_h_
-
-    am_h_p_ = am_h_ / sum(am_h_)
-
-    am_h_p_cr_ = cumsum(am_h_p_) .+ small_number
-
-    am_h_p_cl_ = cumulate_sum_reverse(am_h_p_) .+ small_number
+    a_p_cl_ = cumulate_sum_reverse(a_p_) .+ e
 
     #
-    am_m_ = am_ .* is_m_
+    a_h_ = a_ .* is_h_
 
-    am_m_p_ = am_m_ / sum(am_m_)
+    a_h_p_ = a_h_ / sum(a_h_)
 
-    am_m_p_cr_ = cumsum(am_m_p_) .+ small_number
+    a_h_p_cr_ = cumsum(a_h_p_) .+ e
 
-    am_m_p_cl_ = cumulate_sum_reverse(am_m_p_) .+ small_number
-
-    #
-    jsd_l_ = compute_jsd(am_h_p_cl_, am_m_p_cl_, am_p_cl_)
+    a_h_p_cl_ = cumulate_sum_reverse(a_h_p_) .+ e
 
     #
-    jsd_r_ = compute_jsd(am_h_p_cr_, am_m_p_cr_, am_p_cr_)
+    a_m_ = a_ .* is_m_
+
+    a_m_p_ = a_m_ / sum(a_m_)
+
+    a_m_p_cr_ = cumsum(a_m_p_) .+ e
+
+    a_m_p_cl_ = cumulate_sum_reverse(a_m_p_) .+ e
+
+    #
+    jsd_l_ = compute_jsd(a_h_p_cl_, a_m_p_cl_, a_p_cl_)
+
+    #
+    jsd_r_ = compute_jsd(a_h_p_cr_, a_m_p_cr_, a_p_cr_)
 
     #
     set_score_ = is_h_p_cl_ - is_m_p_cl_
@@ -124,7 +130,7 @@ function score_set_new(
 
         display(
             plot_x_y(
-                (am_,);
+                (a_,);
                 layout = merge(
                     layout,
                     Layout(yaxis_title = "Amplitude"),
@@ -164,7 +170,7 @@ function score_set_new(
 
         display(
             plot_x_y(
-                (am_p_, am_p_cr_, am_p_cl_);
+                (a_p_, a_p_cr_, a_p_cl_);
                 name_ = ("P", "CR(P)", "CL(P)"),
                 layout = merge(
                     layout,
@@ -175,7 +181,7 @@ function score_set_new(
 
         display(
             plot_x_y(
-                (am_h_p_, am_h_p_cr_, am_h_p_cl_);
+                (a_h_p_, a_h_p_cr_, a_h_p_cl_);
                 name_ = ("P", "CR(P)", "CL(P)"),
                 layout = merge(
                     layout,
@@ -186,7 +192,7 @@ function score_set_new(
 
         display(
             plot_x_y(
-                (am_m_p_, am_m_p_cr_, am_m_p_cl_);
+                (a_m_p_, a_m_p_cr_, a_m_p_cl_);
                 name_ = ("P", "CR(P)", "CL(P)"),
                 layout = merge(
                     layout,
@@ -197,7 +203,7 @@ function score_set_new(
 
         display(
             plot_x_y(
-                (am_p_cl_, am_h_p_cl_, am_m_p_cl_);
+                (a_p_cl_, a_h_p_cl_, a_m_p_cl_);
                 name_ = ("Amplitude", "Hit", "Miss"),
                 layout = merge(layout, Layout(title = "CL(P)")),
             ),
@@ -218,7 +224,7 @@ function score_set_new(
 
         display(
             plot_x_y(
-                (am_p_cr_, am_h_p_cr_, am_m_p_cr_);
+                (a_p_cr_, a_h_p_cr_, a_m_p_cr_);
                 name_ = ("Amplitude", "Hit", "Miss"),
                 layout = merge(layout, Layout(title = "CR(P)")),
             ),
@@ -240,13 +246,19 @@ function score_set_new(
         for (k, (set_score_, extreme, area)) in d
             display(
                 _plot(
+                    #
                     element_,
                     element_score_,
+                    #
                     set_element_,
+                    #
                     is_h_,
+                    #
                     set_score_,
+                    #
                     extreme,
                     area;
+                    #
                     title_text = k,
                 ),
             )
@@ -255,6 +267,7 @@ function score_set_new(
 
     end
 
+    #
     return d
 
 end

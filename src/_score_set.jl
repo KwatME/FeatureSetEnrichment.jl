@@ -2,6 +2,7 @@ function _score_set(
     #
     element_::Vector{String},
     score_::Vector{Float64},
+    #
     set_element_::Vector{String},
     #
     is_::Vector{Float64};
@@ -86,11 +87,16 @@ function _score_set(
 
         display(
             _plot(
+                #
                 element_,
                 score_,
+                #
                 set_element_,
+                #
                 is_,
+                #
                 set_score_,
+                #
                 extreme,
                 area,
             ),

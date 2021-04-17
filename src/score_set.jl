@@ -7,6 +7,7 @@ function score_set(
     #
     element_::Vector{String},
     score_::Vector{Float64},
+    #
     set_element_::Vector{String};
     #
     sort::Bool = true,
@@ -26,6 +27,7 @@ function score_set(
         #
         element_,
         score_,
+        #
         set_element_,
         #
         check_is(element_, set_element_);
@@ -75,6 +77,7 @@ function score_set(
             #
             element_,
             score_,
+            #
             set_element_,
             #
             check_is(check, set_element_);

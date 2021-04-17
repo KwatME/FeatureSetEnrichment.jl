@@ -7,6 +7,7 @@ function _plot(
     #
     element_::Vector{String},
     score_::Vector{Float64},
+    #
     set_element_::Vector{String},
     #
     is_::Vector{Float64},
@@ -74,7 +75,12 @@ function _plot(
         legend_x = 0.5,
         legend_y = -0.24,
         #
-        xaxis1_zeroline = false,
+        xaxis_zeroline = false,
+        #
+        xaxis_showspikes = true,
+        xaxis_spikethickness = 0.8,
+        xaxis_spikedash = "solid",
+        xaxis_spikemode = "across",
         #
         yaxis1_domain = yaxis1_domain,
         yaxis1_showline = true,
