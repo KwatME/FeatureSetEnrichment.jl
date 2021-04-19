@@ -8,6 +8,7 @@ function _score_set(
     is_::Vector{Float64};
     #
     plot::Bool = true,
+    plot_kwargs...,
 )::Tuple{Vector{Float64}, Float64, Float64}
 
     #
@@ -98,7 +99,9 @@ function _score_set(
                 set_score_,
                 #
                 extreme,
-                area,
+                area;
+                #
+                plot_kwargs...,
             ),
         )
 

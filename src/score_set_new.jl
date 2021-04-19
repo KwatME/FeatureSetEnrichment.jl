@@ -1,6 +1,6 @@
 using Plotly: Layout
 
-using Information: compute_gjsd, compute_adkld
+using Information: compute_gjsd, compute_adkld, compute_kld
 using Plot: plot_x_y
 using Support:
     cumulate_sum_reverse, get_extreme_and_area, sort_like
@@ -8,7 +8,7 @@ using Support:
 function score_set_new(
     #
     element_::Vector{String},
-    element_score_::Vector{Float64},
+    score_::Vector{Float64},
     #
     set_element_::Vector{String};
     #
@@ -20,13 +20,12 @@ function score_set_new(
     #
     if sort
 
-        element_score_, element_ =
-            sort_like((element_score_, element_))
+        score_, element_ = sort_like((score_, element_))
 
     end
 
     #
-    a = abs.(element_score_)
+    a = abs.(score_)
 
     #
     is_h = check_is(element_, set_element_)
@@ -37,21 +36,21 @@ function score_set_new(
     is_ha = is_h .* a
 
     #
+    e = eps()
+
+    #
     is_ha_p = is_ha / sum(is_ha)
 
-    is_ha_p_cr = cumsum(is_ha_p) #.+ e
+    is_ha_p_cr = cumsum(is_ha_p) .+ e
 
-    is_ha_p_cl = cumulate_sum_reverse(is_ha_p) #.+ e
+    is_ha_p_cl = cumulate_sum_reverse(is_ha_p) .+ e
 
     #
     is_m_p = is_m / sum(is_m)
 
-    is_m_p_cr = cumsum(is_m_p) #.+ e
+    is_m_p_cr = cumsum(is_m_p) .+ e
 
-    is_m_p_cl = cumulate_sum_reverse(is_m_p) #.+ e
-
-    #
-    e = eps()
+    is_m_p_cl = cumulate_sum_reverse(is_m_p) .+ e
 
     #
     a_p = a / sum(a)
@@ -100,7 +99,7 @@ function score_set_new(
         #
         display(
             plot_x_y(
-                (element_score_,);
+                (score_,);
                 layout = merge(
                     layout,
                     Layout(yaxis_title = "Score"),
@@ -108,7 +107,6 @@ function score_set_new(
             ),
         )
 
-        #
         display(
             plot_x_y(
                 (is_h, is_m);
@@ -117,7 +115,6 @@ function score_set_new(
             ),
         )
 
-        #
         display(
             plot_x_y(
                 (a,);
@@ -154,6 +151,52 @@ function score_set_new(
         #
         display(
             plot_x_y(
+                (is_ha_p_cr, is_m_p_cr);
+                name_ = ("Is Hit * Amplitude", "Is Miss"),
+                layout = merge(layout, Layout(title = "CR(P)")),
+            ),
+        )
+
+        display(
+            plot_x_y(
+                (is_ha_p_cl, is_m_p_cl);
+                name_ = ("Is Hit * Amplitude", "Is Miss"),
+                layout = merge(layout, Layout(title = "CL(P)")),
+            ),
+        )
+
+        #
+        display(
+            plot_x_y(
+                (
+                    compute_kld(is_ha_p_cr, is_m_p_cr),
+                    compute_kld(is_m_p_cr, is_ha_p_cr),
+                );
+                name_ = ("KLD(Hit, Miss)", "KLD(Miss, Hit)"),
+                layout = merge(
+                    layout,
+                    Layout(title = "CR(P(Is)"),
+                ),
+            ),
+        )
+
+        display(
+            plot_x_y(
+                (
+                    compute_kld(is_ha_p_cl, is_m_p_cl),
+                    compute_kld(is_m_p_cl, is_ha_p_cl),
+                );
+                name_ = ("KLD(Hit, Miss)", "KLD(Miss, Hit)"),
+                layout = merge(
+                    layout,
+                    Layout(title = "CL(P(Is)"),
+                ),
+            ),
+        )
+
+        #
+        display(
+            plot_x_y(
                 (a_p, a_p_cr, a_p_cl);
                 name_ = ("P", "CR(P)", "CL(P)"),
                 layout = merge(
@@ -163,7 +206,6 @@ function score_set_new(
             ),
         )
 
-        #
         display(
             plot_x_y(
                 (a_h_p, a_h_p_cr, a_h_p_cl);
@@ -203,6 +245,35 @@ function score_set_new(
             ),
         )
 
+        #
+        display(
+            plot_x_y(
+                (
+                    compute_kld(a_h_p_cr, a_m_p_cr),
+                    compute_kld(a_m_p_cr, a_h_p_cr),
+                );
+                name_ = ("KLD(Hit, Miss)", "KLD(Miss, Hit)"),
+                layout = merge(
+                    layout,
+                    Layout(title = "CR(P(Amplitude))"),
+                ),
+            ),
+        )
+
+        display(
+            plot_x_y(
+                (
+                    compute_kld(a_h_p_cl, a_m_p_cl),
+                    compute_kld(a_m_p_cl, a_h_p_cl),
+                );
+                name_ = ("KLD(Hit, Miss)", "KLD(Miss, Hit)"),
+                layout = merge(
+                    layout,
+                    Layout(title = "CL(P(Amplitude))"),
+                ),
+            ),
+        )
+
     end
 
     #
@@ -212,19 +283,21 @@ function score_set_new(
     for (k, set_score_) in (
         #
         ("Is KS < (classic)", is_ha_p_cl - is_m_p_cl),
+        ("Is KS >", is_ha_p_cr - is_m_p_cr),
         (
             "Is KS <>",
             (is_ha_p_cl - is_m_p_cl) - (is_ha_p_cr - is_m_p_cr),
         ),
         #
         ("Is GJSD <", compute_gjsd(is_ha_p_cl, is_m_p_cl)),
+        ("Is GJSD >", compute_gjsd(is_ha_p_cr, is_m_p_cr)),
         (
             "Is GJSD <>",
             compute_gjsd(is_ha_p_cl, is_m_p_cl) -
             compute_gjsd(is_ha_p_cr, is_m_p_cr),
         ),
-        #
         ("Is ADKLD <", compute_adkld(is_ha_p_cl, is_m_p_cl)),
+        ("Is ADKLD >", compute_adkld(is_ha_p_cr, is_m_p_cr)),
         (
             "Is ADKLD <>",
             compute_adkld(is_ha_p_cl, is_m_p_cl) -
@@ -232,12 +305,14 @@ function score_set_new(
         ),
         #
         ("A KS <", a_h_p_cl - a_m_p_cl),
+        ("A KS >", a_h_p_cr - a_m_p_cr),
         (
             "A KS <>",
             (a_h_p_cl - a_m_p_cl) - (a_h_p_cr - a_m_p_cr),
         ),
         #
         ("A GJSDm <", compute_gjsd(a_h_p_cl, a_m_p_cl)),
+        ("A GJSDm >", compute_gjsd(a_h_p_cr, a_m_p_cr)),
         (
             "A GJSDm <>",
             compute_gjsd(a_h_p_cl, a_m_p_cl) -
@@ -245,6 +320,7 @@ function score_set_new(
         ),
         #
         ("A GJSDp <", compute_gjsd(a_h_p_cl, a_m_p_cl, a_p_cl)),
+        ("A GJSDp >", compute_gjsd(a_h_p_cr, a_m_p_cr, a_p_cr)),
         (
             "A GJSDp <>",
             compute_gjsd(a_h_p_cl, a_m_p_cl, a_p_cl) -
@@ -252,6 +328,7 @@ function score_set_new(
         ),
         #
         ("A ADKLD <", compute_adkld(a_h_p_cl, a_m_p_cl)),
+        ("A ADKLD >", compute_adkld(a_h_p_cr, a_m_p_cr)),
         (
             "A ADKLD <>",
             compute_adkld(a_h_p_cl, a_m_p_cl) -
@@ -266,24 +343,28 @@ function score_set_new(
         d[k] = (set_score_, extreme, area)
 
         #
-        display(
-            _plot(
-                #
-                element_,
-                element_score_,
-                #
-                set_element_,
-                #
-                is_h,
-                #
-                set_score_,
-                #
-                extreme,
-                area;
-                #
-                title_text = k,
-            ),
-        )
+        if plot
+
+            display(
+                _plot(
+                    #
+                    element_,
+                    score_,
+                    #
+                    set_element_,
+                    #
+                    is_h,
+                    #
+                    set_score_,
+                    #
+                    extreme,
+                    area;
+                    #
+                    title_text = k,
+                ),
+            )
+
+        end
 
     end
 

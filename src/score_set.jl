@@ -13,6 +13,7 @@ function score_set(
     sort::Bool = true,
     #
     plot::Bool = true,
+    plot_kwargs...,
 )::Tuple{Vector{Float64}, Float64, Float64}
 
     #
@@ -33,6 +34,7 @@ function score_set(
         check_is(element_, set_element_);
         #
         plot = plot,
+        plot_kwargs...,
     )
 
 end
@@ -144,10 +146,12 @@ function score_set(
     directory_path::String,
 )::DataFrame
 
+    #
     element_set_x_sample = DataFrame()
 
     # write element_set_x_sample directory_path
 
+    #
     return element_set_x_sample
 
 end
