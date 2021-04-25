@@ -1,8 +1,16 @@
+using DataStructures: OrderedDict
 using Plotly: Layout
 
-using Information: compute_gjsd, compute_adkld, compute_kld
+using Information:
+    compute_kld, compute_jsd1, compute_jsd2, compute_jsd3, compute_jsd4
 using Plot: plot_x_y
 using Support: cumulate_sum_reverse, get_extreme_and_area, sort_like
+
+function compute_ks(v1::Vector{Float64}, v2::Vector{Float64})::Vector{Float64}
+
+    return v1 - v2
+
+end
 
 function score_set_new(
     #
@@ -112,10 +120,7 @@ function score_set_new(
         )
 
         display(
-            plot_x_y(
-                (a,);
-                layout = merge(layout, Layout(yaxis_title = "Amplitude")),
-            ),
+            plot_x_y((a,); layout = merge(layout, Layout(yaxis_title = "A"))),
         )
 
         #
@@ -123,7 +128,7 @@ function score_set_new(
             plot_x_y(
                 (is_ha_p, is_ha_p_cr, is_ha_p_cl);
                 name_ = ("P", "CR(P)", "CL(P)"),
-                layout = merge(layout, Layout(title = "Is Hit * Amplitude")),
+                layout = merge(layout, Layout(title = "Is Hit * A")),
             ),
         )
 
@@ -139,7 +144,7 @@ function score_set_new(
         display(
             plot_x_y(
                 (is_ha_p_cr, is_m_p_cr);
-                name_ = ("Is Hit * Amplitude", "Is Miss"),
+                name_ = ("Is Hit * A", "Is Miss"),
                 layout = merge(layout, Layout(title = "CR(P)")),
             ),
         )
@@ -147,7 +152,7 @@ function score_set_new(
         display(
             plot_x_y(
                 (is_ha_p_cl, is_m_p_cl);
-                name_ = ("Is Hit * Amplitude", "Is Miss"),
+                name_ = ("Is Hit * A", "Is Miss"),
                 layout = merge(layout, Layout(title = "CL(P)")),
             ),
         )
@@ -180,7 +185,7 @@ function score_set_new(
             plot_x_y(
                 (a_p, a_p_cr, a_p_cl);
                 name_ = ("P", "CR(P)", "CL(P)"),
-                layout = merge(layout, Layout(title = "Amplitude")),
+                layout = merge(layout, Layout(title = "A")),
             ),
         )
 
@@ -188,7 +193,7 @@ function score_set_new(
             plot_x_y(
                 (a_h_p, a_h_p_cr, a_h_p_cl);
                 name_ = ("P", "CR(P)", "CL(P)"),
-                layout = merge(layout, Layout(title = "Amplitude Hit")),
+                layout = merge(layout, Layout(title = "A Hit")),
             ),
         )
 
@@ -196,7 +201,7 @@ function score_set_new(
             plot_x_y(
                 (a_m_p, a_m_p_cr, a_m_p_cl);
                 name_ = ("P", "CR(P)", "CL(P)"),
-                layout = merge(layout, Layout(title = "Amplitude Miss")),
+                layout = merge(layout, Layout(title = "A Miss")),
             ),
         )
 
@@ -204,7 +209,7 @@ function score_set_new(
         display(
             plot_x_y(
                 (a_p_cr, a_h_p_cr, a_m_p_cr);
-                name_ = ("Amplitude", "Hit", "Miss"),
+                name_ = ("A", "Hit", "Miss"),
                 layout = merge(layout, Layout(title = "CR(P)")),
             ),
         )
@@ -212,7 +217,7 @@ function score_set_new(
         display(
             plot_x_y(
                 (a_p_cl, a_h_p_cl, a_m_p_cl);
-                name_ = ("Amplitude", "Hit", "Miss"),
+                name_ = ("A", "Hit", "Miss"),
                 layout = merge(layout, Layout(title = "CL(P)")),
             ),
         )
@@ -225,7 +230,7 @@ function score_set_new(
                     compute_kld(a_m_p_cr, a_h_p_cr),
                 );
                 name_ = ("KLD(Hit, Miss)", "KLD(Miss, Hit)"),
-                layout = merge(layout, Layout(title = "CR(P(Amplitude))")),
+                layout = merge(layout, Layout(title = "CR(P(A))")),
             ),
         )
 
@@ -236,73 +241,75 @@ function score_set_new(
                     compute_kld(a_m_p_cl, a_h_p_cl),
                 );
                 name_ = ("KLD(Hit, Miss)", "KLD(Miss, Hit)"),
-                layout = merge(layout, Layout(title = "CL(P(Amplitude))")),
+                layout = merge(layout, Layout(title = "CL(P(A))")),
             ),
         )
 
     end
 
     #
-    d = Dict{String, Tuple{Vector{Float64}, Float64, Float64}}()
+    d = OrderedDict{String, Tuple{Vector{Float64}, Float64, Float64}}()
 
     #
-    for (k, set_score_) in (
-        #
-        ("Is KS < (classic)", is_ha_p_cl - is_m_p_cl),
-        ("Is KS >", is_ha_p_cr - is_m_p_cr),
-        ("Is KS <>", (is_ha_p_cl - is_m_p_cl) - (is_ha_p_cr - is_m_p_cr)),
-        #
-        ("Is GJSD <", compute_gjsd(is_ha_p_cl, is_m_p_cl)),
-        ("Is GJSD >", compute_gjsd(is_ha_p_cr, is_m_p_cr)),
-        (
-            "Is GJSD <>",
-            compute_gjsd(is_ha_p_cl, is_m_p_cl) -
-            compute_gjsd(is_ha_p_cr, is_m_p_cr),
-        ),
-        ("Is ADKLD <", compute_adkld(is_ha_p_cl, is_m_p_cl)),
-        ("Is ADKLD >", compute_adkld(is_ha_p_cr, is_m_p_cr)),
-        (
-            "Is ADKLD <>",
-            compute_adkld(is_ha_p_cl, is_m_p_cl) -
-            compute_adkld(is_ha_p_cr, is_m_p_cr),
-        ),
-        #
-        ("A KS <", a_h_p_cl - a_m_p_cl),
-        ("A KS >", a_h_p_cr - a_m_p_cr),
-        ("A KS <>", (a_h_p_cl - a_m_p_cl) - (a_h_p_cr - a_m_p_cr)),
-        #
-        ("A GJSDm <", compute_gjsd(a_h_p_cl, a_m_p_cl)),
-        ("A GJSDm >", compute_gjsd(a_h_p_cr, a_m_p_cr)),
-        (
-            "A GJSDm <>",
-            compute_gjsd(a_h_p_cl, a_m_p_cl) - compute_gjsd(a_h_p_cr, a_m_p_cr),
-        ),
-        #
-        ("A GJSDp <", compute_gjsd(a_h_p_cl, a_m_p_cl, a_p_cl)),
-        ("A GJSDp >", compute_gjsd(a_h_p_cr, a_m_p_cr, a_p_cr)),
-        (
-            "A GJSDp <>",
-            compute_gjsd(a_h_p_cl, a_m_p_cl, a_p_cl) -
-            compute_gjsd(a_h_p_cr, a_m_p_cr, a_p_cr),
-        ),
-        #
-        ("A ADKLD <", compute_adkld(a_h_p_cl, a_m_p_cl)),
-        ("A ADKLD >", compute_adkld(a_h_p_cr, a_m_p_cr)),
-        (
-            "A ADKLD <>",
-            compute_adkld(a_h_p_cl, a_m_p_cl) -
-            compute_adkld(a_h_p_cr, a_m_p_cr),
-        ),
+    for (kv, hl, ml, hr, mr) in (
+        ("Is", is_ha_p_cl, is_m_p_cl, is_ha_p_cr, is_m_p_cr),
+        ("A", a_h_p_cl, a_m_p_cl, a_h_p_cr, a_m_p_cr),
     )
 
-        #
-        extreme, area = get_extreme_and_area(set_score_)
+        for (kf, f) in (
+            ("KS", compute_ks),
+            ("JSD1", compute_jsd1),
+            ("JSD2", compute_jsd2),
+            ("JSD3", compute_jsd3),
+            ("JSD4", compute_jsd4),
+        )
 
-        #
-        d[k] = (set_score_, extreme, area)
+            #
+            l = f(hl, ml)
 
-        #
-        if plot
+            r = f(hr, mr)
+
+            lr = l - r
+
+            #
+            for (k, v) in
+                (("$kv $kf <", l), ("$kv $kf >", r), ("$kv $kf <>", l - r))
+
+                d[k] = (v, get_extreme_and_area(v)...)
+
+            end
+
+            #
+            if in(kf, ("JSD1", "JSD2"))
+
+                #
+                l = f(hl, ml, a_p_cl)
+
+                r = f(hr, mr, a_p_cr)
+
+                lr = l - r
+
+                #
+                for (k, v) in (
+                    ("$kv $(kf)w <", l),
+                    ("$kv $(kf)w >", r),
+                    ("$kv $(kf)w <>", l - r),
+                )
+
+                    d[k] = (v, get_extreme_and_area(v)...)
+
+                end
+
+            end
+
+        end
+
+    end
+
+    #
+    if plot
+
+        for (k, (set_score_, extreme, area)) in d
 
             display(
                 _plot(
@@ -329,6 +336,49 @@ function score_set_new(
 
     #
     return d
+
+end
+
+function score_set_new(
+    #
+    element_::Vector{String},
+    score_::Vector{Float64},
+    #
+    set_to_element_::Dict{String, Vector{String}};
+    #
+    sort::Bool = true,
+)::Dict{String, Dict{String, Tuple{Vector{Float64}, Float64, Float64}}}
+
+    #
+    if sort
+
+        score_, element_ = sort_like((score_, element_))
+
+    end
+
+    #
+    set_to_d =
+        Dict{String, Dict{String, Tuple{Vector{Float64}, Float64, Float64}}}()
+
+    #
+    for (set, set_element_) in set_to_element_
+
+        set_to_d[set] = score_set_new(
+            #
+            element_,
+            score_,
+            #
+            set_element_,
+            #
+            sort = false,
+            #
+            plot = false,
+        )
+
+    end
+
+    #
+    return set_to_d
 
 end
 
