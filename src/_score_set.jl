@@ -108,11 +108,7 @@ function _score_set(
     end
 
     #
-    return (
-        set_score_,
-        extreme,
-        area / convert(Float64, n_element),
-    )
+    return (set_score_, extreme, area / convert(Float64, n_element))
 
 end
 

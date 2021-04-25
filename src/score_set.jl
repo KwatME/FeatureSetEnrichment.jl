@@ -58,10 +58,7 @@ function score_set(
     #
     if 10 < length(set_to_element_)
 
-        check = Dict(
-            e => i for
-            (e, i) in zip(element_, 1:length(element_))
-        )
+        check = Dict(e => i for (e, i) in zip(element_, 1:length(element_)))
 
     else
 
@@ -70,11 +67,11 @@ function score_set(
     end
 
     #
-    set_to_d =
-        Dict{String, Tuple{Vector{Float64}, Float64, Float64}}()
+    set_to_d = Dict{String, Tuple{Vector{Float64}, Float64, Float64}}()
 
     #
     for (set, set_element_) in set_to_element_
+
         set_to_d[set] = _score_set(
             #
             element_,
@@ -106,15 +103,13 @@ function score_set(
     element_ = element_x_sample[!, 1]
 
     #
-    set_x_sample =
-        DataFrame(:Set => sort(collect(keys(set_to_element_))))
+    set_x_sample = DataFrame(:Set => sort(collect(keys(set_to_element_))))
 
     #
     for sample in names(element_x_sample)[2:end]
 
         #
-        is_good_ =
-            findall(!ismissing, element_x_sample[!, sample])
+        is_good_ = findall(!ismissing, element_x_sample[!, sample])
 
         #
         set_to_d = score_set(
@@ -127,9 +122,8 @@ function score_set(
         )
 
         #
-        set_x_sample[!, sample] = collect(
-            set_to_d[set][end] for set in set_x_sample[!, :Set]
-        )
+        set_x_sample[!, sample] =
+            collect(set_to_d[set][end] for set in set_x_sample[!, :Set])
 
     end
 

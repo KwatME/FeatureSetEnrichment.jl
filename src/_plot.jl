@@ -46,10 +46,8 @@ function _plot(
         showarrow = false,
     )
 
-    x_annotation_template = merge(
-        annotation_template,
-        attr(xanchor = "center", x = 0.5),
-    )
+    x_annotation_template =
+        merge(annotation_template, attr(xanchor = "center", x = 0.5))
 
     y_annotation_template = merge(
         annotation_template,
@@ -106,10 +104,7 @@ function _plot(
             #
             merge(
                 x_annotation_template,
-                attr(
-                    y = -0.088,
-                    text = "<b>Element Rank (n=$n_element)</b>",
-                ),
+                attr(y = -0.088, text = "<b>Element Rank (n=$n_element)</b>"),
             ),
             #
             merge(
@@ -121,10 +116,7 @@ function _plot(
             ),
             merge(
                 y_annotation_template,
-                attr(
-                    y = get_center(yaxis2_domain...),
-                    text = "<b>Set</b>",
-                ),
+                attr(y = get_center(yaxis2_domain...), text = "<b>Set</b>"),
             ),
             merge(
                 y_annotation_template,
@@ -166,9 +158,7 @@ function _plot(
         text = element_[isbit_],
         #
         marker_symbol = "line-ns-open",
-        marker_size = height *
-                      (yaxis2_domain[2] - yaxis2_domain[1]) *
-                      0.64,
+        marker_size = height * (yaxis2_domain[2] - yaxis2_domain[1]) * 0.64,
         marker_line_width = line_width,
         marker_color = "#9017e6",
         #
@@ -187,10 +177,7 @@ function _plot(
                 #
                 y = 1.16,
                 text = join(
-                    (
-                        "<b>Extreme = $extreme</b>",
-                        "<b>Area = $area</b>",
-                    ),
+                    ("<b>Extreme = $extreme</b>", "<b>Area = $area</b>"),
                     "     ",
                 ),
                 #
@@ -216,10 +203,7 @@ function _plot(
         hoverinfo = "x+y+text",
     )
 
-    return plot(
-        [score_trace, set_element_trace, set_score_trace],
-        layout,
-    )
+    return plot([score_trace, set_element_trace, set_score_trace], layout)
 
 end
 
