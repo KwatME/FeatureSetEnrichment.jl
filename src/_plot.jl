@@ -17,7 +17,7 @@ function _plot(
     title_text::String = "Set Enrichment",
     title_font_size::Real = 24,
     axis_title_font_size::Real = 12,
-    element_value_name::String = "Element Score",
+    element_score_name::String = "Element Score",
 )::Any
 
     n_element = length(element_)
@@ -82,7 +82,7 @@ function _plot(
                 y_annotation_template,
                 attr(
                     y = get_center(yaxis1_domain...),
-                    text = "<b>$element_value_name</b>",
+                    text = "<b>$element_score_name</b>",
                 ),
             ),
             merge(

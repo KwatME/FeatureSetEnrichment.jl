@@ -18,7 +18,7 @@ function score_set_new(
     set_element_::Vector{String};
     sort::Bool = true,
     plot::Bool = true,
-)::Dict{String, Tuple{Vector{Float64}, Float64, Float64}}
+)::OrderedDict{String, Tuple{Vector{Float64}, Float64, Float64}}
 
     if sort
 
@@ -123,44 +123,6 @@ function score_set_new(
 
         display(
             plot_x_y(
-                (is_ha_p_cr, is_m_p_cr);
-                name_ = ("Is Hit * A", "Is Miss"),
-                layout = merge(layout, Layout(title = "CR(P)")),
-            ),
-        )
-
-        display(
-            plot_x_y(
-                (is_ha_p_cl, is_m_p_cl);
-                name_ = ("Is Hit * A", "Is Miss"),
-                layout = merge(layout, Layout(title = "CL(P)")),
-            ),
-        )
-
-        display(
-            plot_x_y(
-                (
-                    compute_kld(is_ha_p_cr, is_m_p_cr),
-                    compute_kld(is_m_p_cr, is_ha_p_cr),
-                );
-                name_ = ("KLD(Hit, Miss)", "KLD(Miss, Hit)"),
-                layout = merge(layout, Layout(title = "CR(P(Is)")),
-            ),
-        )
-
-        display(
-            plot_x_y(
-                (
-                    compute_kld(is_ha_p_cl, is_m_p_cl),
-                    compute_kld(is_m_p_cl, is_ha_p_cl),
-                );
-                name_ = ("KLD(Hit, Miss)", "KLD(Miss, Hit)"),
-                layout = merge(layout, Layout(title = "CL(P(Is)")),
-            ),
-        )
-
-        display(
-            plot_x_y(
                 (a_p, a_p_cr, a_p_cl);
                 name_ = ("P", "CR(P)", "CL(P)"),
                 layout = merge(layout, Layout(title = "A")),
@@ -180,44 +142,6 @@ function score_set_new(
                 (a_m_p, a_m_p_cr, a_m_p_cl);
                 name_ = ("P", "CR(P)", "CL(P)"),
                 layout = merge(layout, Layout(title = "A Miss")),
-            ),
-        )
-
-        display(
-            plot_x_y(
-                (a_p_cr, a_h_p_cr, a_m_p_cr);
-                name_ = ("A", "Hit", "Miss"),
-                layout = merge(layout, Layout(title = "CR(P)")),
-            ),
-        )
-
-        display(
-            plot_x_y(
-                (a_p_cl, a_h_p_cl, a_m_p_cl);
-                name_ = ("A", "Hit", "Miss"),
-                layout = merge(layout, Layout(title = "CL(P)")),
-            ),
-        )
-
-        display(
-            plot_x_y(
-                (
-                    compute_kld(a_h_p_cr, a_m_p_cr),
-                    compute_kld(a_m_p_cr, a_h_p_cr),
-                );
-                name_ = ("KLD(Hit, Miss)", "KLD(Miss, Hit)"),
-                layout = merge(layout, Layout(title = "CR(P(A))")),
-            ),
-        )
-
-        display(
-            plot_x_y(
-                (
-                    compute_kld(a_h_p_cl, a_m_p_cl),
-                    compute_kld(a_m_p_cl, a_h_p_cl),
-                );
-                name_ = ("KLD(Hit, Miss)", "KLD(Miss, Hit)"),
-                layout = merge(layout, Layout(title = "CL(P(A))")),
             ),
         )
 
@@ -242,33 +166,28 @@ function score_set_new(
 
             r = f(hr, mr)
 
-            lr = l - r
+            for (k, v) in
+                (("$kv $kf <", l), ("$kv $kf >", r), ("$kv $kf <>", l - r))
 
-            p = [("$kv $kf <", l), ("$kv $kf >", r), ("$kv $kf <>", l - r)]
+                d[k] = (v, get_extreme_and_area(v)...)
 
-            if kv == "Is" && in(kf, ("JSD1", "JSD2"))
+            end
+
+            if kv == "A" && in(kf, ("JSD1", "JSD2"))
 
                 l = f(hl, ml, a_p_cl)
 
                 r = f(hr, mr, a_p_cr)
 
-                lr = l - r
-
-                p = vcat(
-                    p,
-                    [
-                        ("$kv $(kf)w <", l),
-                        ("$kv $(kf)w >", r),
-                        ("$kv $(kf)w <>", l - r),
-                    ],
+                for (k, v) in (
+                    ("$kv $(kf)w <", l),
+                    ("$kv $(kf)w >", r),
+                    ("$kv $kf <>", l - r),
                 )
 
-            end
+                    d[k] = (v, get_extreme_and_area(v)...)
 
-            for (k, v) in p
-
-
-                d[k] = (v, get_extreme_and_area(v)...)
+                end
 
             end
 
@@ -306,7 +225,7 @@ function score_set_new(
     score_::Vector{Float64},
     set_to_element_::Dict{String, Vector{String}};
     sort::Bool = true,
-)::Dict{String, Dict{String, Tuple{Vector{Float64}, Float64, Float64}}}
+)::Dict{String, OrderedDict{String, Tuple{Vector{Float64}, Float64, Float64}}}
 
     if sort
 
@@ -314,12 +233,14 @@ function score_set_new(
 
     end
 
-    set_to_d =
-        Dict{String, Dict{String, Tuple{Vector{Float64}, Float64, Float64}}}()
+    set_to_method_to_result = Dict{
+        String,
+        OrderedDict{String, Tuple{Vector{Float64}, Float64, Float64}},
+    }()
 
     for (set, set_element_) in set_to_element_
 
-        set_to_d[set] = score_set_new(
+        set_to_method_to_result[set] = score_set_new(
             element_,
             score_,
             set_element_,
@@ -329,7 +250,7 @@ function score_set_new(
 
     end
 
-    return set_to_d
+    return set_to_method_to_result
 
 end
 
