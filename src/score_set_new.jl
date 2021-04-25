@@ -169,7 +169,15 @@ function score_set_new(
             for (k, v) in
                 (("$kv $kf <", l), ("$kv $kf >", r), ("$kv $kf <>", l - r))
 
-                d[k] = (v, get_extreme_and_area(v)...)
+                (extreme, area) = get_extreme_and_area(v)
+
+                if !plot
+
+                    v = []
+
+                end
+
+                d[k] = (v, extreme, area)
 
             end
 
@@ -185,7 +193,15 @@ function score_set_new(
                     ("$kv $(kf)w <>", l - r),
                 )
 
-                    d[k] = (v, get_extreme_and_area(v)...)
+                    (extreme, area) = get_extreme_and_area(v)
+
+                    if !plot
+
+                        v = []
+
+                    end
+
+                    d[k] = (v, extreme, area)
 
                 end
 
@@ -243,7 +259,7 @@ function score_set_new(
         set_to_method_to_result[set] = score_set_new(
             element_,
             score_,
-            set_element_,
+            set_element_;
             sort = false,
             plot = false,
         )
