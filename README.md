@@ -1,5 +1,3 @@
-For set enrichment analysis.
-
 ## Install
 
 ```sh
@@ -9,7 +7,7 @@ julia
 ```julia
 using Pkg: add
 
-add(url="https://github.com/KwatME/FeatureSetEnrichment.jl")
+add(; url="https://github.com/KwatME/FeatureSetEnrichment.jl")
 ```
 
 Test
@@ -22,6 +20,6 @@ julia --eval 'using FeatureSetEnrichment; score_set(["a", "b", "c"], [-1.,0.,1.]
 
 See [examples](notebook/example.ipynb).
 
-### For using the the python interface, check out [FeatureSetEnrichment.py](https://github.com/KwatME/FeatureSetEnrichment.py).
+---
 
-### For using the desktop application, check out [GSEA.js](https://github.com/KwatME/GSEA.js).
+Check out the [python version](https://github.com/KwatME/FeatureSetEnrichment.py) and the [desktop application](https://github.com/KwatME/GSEA.web).
