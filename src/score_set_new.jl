@@ -182,7 +182,7 @@ function score_set_new(
                 for (k, v) in (
                     ("$kv $(kf)w <", l),
                     ("$kv $(kf)w >", r),
-                    ("$kv $kf <>", l - r),
+                    ("$kv $(kf)w <>", l - r),
                 )
 
                     d[k] = (v, get_extreme_and_area(v)...)
