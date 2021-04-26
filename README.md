@@ -13,7 +13,7 @@ add(; url="https://github.com/KwatME/FeatureSetEnrichment.jl")
 Test
 
 ```sh
-julia --eval 'using FeatureSetEnrichment; score_set(["a", "b", "c"], [-1.,0.,1.], ["a", "b"])'
+julia --eval 'using FeatureSetEnrichment; score_set(["a", "b"], [-1., 1.], ["b"])'
 ```
 
 ## Use
