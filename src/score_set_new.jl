@@ -22,7 +22,7 @@ function score_set_new(
 
     if sort
 
-        score_, element_ = sort_like((score_, element_))
+        score_, element_ = sort_like(score_, element_)
 
     end
 
@@ -248,7 +248,7 @@ function score_set_new(
 
     if sort
 
-        score_, element_ = sort_like((score_, element_))
+        score_, element_ = sort_like(score_, element_)
 
     end
 
