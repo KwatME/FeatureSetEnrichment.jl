@@ -156,10 +156,10 @@ function score_set_new(
 
         for (kf, f) in (
             ("KS", compute_ks),
-            #("JSD1", compute_jsd1),
+            ("JSD1", compute_jsd1),
             ("JSD2", compute_jsd2),
-            #("JSD3", compute_jsd3),
-            #("JSD4", compute_jsd4),
+            ("JSD3", compute_jsd3),
+            ("JSD4", compute_jsd4),
         )
 
             l = f(hl, ml)
@@ -167,11 +167,7 @@ function score_set_new(
             r = f(hr, mr)
 
             for (k, v) in
-                (
-                 ("$kv $kf <", l),
-                 #("$kv $kf >", r),
-                 ("$kv $kf <>", l - r),
-                )
+                (("$kv $kf <", l), ("$kv $kf >", r), ("$kv $kf <>", l - r))
 
                 (extreme, area) = get_extreme_and_area(v)
 
@@ -193,7 +189,7 @@ function score_set_new(
 
                 for (k, v) in (
                     ("$kv $(kf)w <", l),
-                    #("$kv $(kf)w >", r),
+                    ("$kv $(kf)w >", r),
                     ("$kv $(kf)w <>", l - r),
                 )
 
