@@ -2,7 +2,7 @@ using DataStructures: OrderedDict
 using Plotly: Layout
 
 using Information:
-    compute_kld, compute_jsd1, compute_jsd2, compute_jsd3, compute_jsd4
+    compute_kld, compute_idrs, compute_idrd, compute_ides, compute_ided
 using Plot: plot_x_y
 using Support: cumulate_sum_reverse, get_extreme_and_area, sort_like
 
@@ -150,16 +150,16 @@ function score_set_new(
     d = OrderedDict{String, Tuple{Vector{Float64}, Float64, Float64}}()
 
     for (kv, hl, ml, hr, mr) in (
-        ("Is", is_ha_p_cl, is_m_p_cl, is_ha_p_cr, is_m_p_cr),
-        ("A", a_h_p_cl, a_m_p_cl, a_h_p_cr, a_m_p_cr),
+        ("is", is_ha_p_cl, is_m_p_cl, is_ha_p_cr, is_m_p_cr),
+        ("a", a_h_p_cl, a_m_p_cl, a_h_p_cr, a_m_p_cr),
     )
 
         for (kf, f) in (
-            ("KS", compute_ks),
-            ("JSD1", compute_jsd1),
-            ("JSD2", compute_jsd2),
-            ("JSD3", compute_jsd3),
-            ("JSD4", compute_jsd4),
+            ("ks", compute_ks),
+            ("idrs", compute_idrs),
+            ("idrd", compute_idrd),
+            ("ides", compute_ides),
+            ("ided", compute_ided),
         )
 
             l = f(hl, ml)
@@ -181,7 +181,7 @@ function score_set_new(
 
             end
 
-            if kv == "A" && in(kf, ("JSD1", "JSD2"))
+            if kv == "a" && in(kf, ("idrs", "idrd"))
 
                 l = f(hl, ml, a_p_cl)
 
