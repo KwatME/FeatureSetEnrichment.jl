@@ -88,59 +88,59 @@ function score_set_new(
 
         display(
             plot_x_y(
-                (score_,);
+                [score_];
                 layout = merge(layout, Layout(yaxis_title = "Score")),
             ),
         )
 
         display(
             plot_x_y(
-                (is_h, is_m);
-                name_ = ("Hit", "Miss"),
+                [is_h, is_m];
+                name_ = ["Hit", "Miss"],
                 layout = merge(layout, Layout(title = "Is")),
             ),
         )
 
         display(
-            plot_x_y((a,); layout = merge(layout, Layout(yaxis_title = "A"))),
+            plot_x_y([a]; layout = merge(layout, Layout(yaxis_title = "A"))),
         )
 
         display(
             plot_x_y(
-                (is_ha_p, is_ha_p_cr, is_ha_p_cl);
-                name_ = ("P", "CR(P)", "CL(P)"),
+                [is_ha_p, is_ha_p_cr, is_ha_p_cl];
+                name_ = ["P", "CR(P)", "CL(P)"],
                 layout = merge(layout, Layout(title = "Is Hit * A")),
             ),
         )
 
         display(
             plot_x_y(
-                (is_m_p, is_m_p_cr, is_m_p_cl);
-                name_ = ("P", "CR(P)", "CL(P)"),
+                [is_m_p, is_m_p_cr, is_m_p_cl];
+                name_ = ["P", "CR(P)", "CL(P)"],
                 layout = merge(layout, Layout(title = "Is Miss")),
             ),
         )
 
         display(
             plot_x_y(
-                (a_p, a_p_cr, a_p_cl);
-                name_ = ("P", "CR(P)", "CL(P)"),
+                [a_p, a_p_cr, a_p_cl];
+                name_ = ["P", "CR(P)", "CL(P)"],
                 layout = merge(layout, Layout(title = "A")),
             ),
         )
 
         display(
             plot_x_y(
-                (a_h_p, a_h_p_cr, a_h_p_cl);
-                name_ = ("P", "CR(P)", "CL(P)"),
+                [a_h_p, a_h_p_cr, a_h_p_cl];
+                name_ = ["P", "CR(P)", "CL(P)"],
                 layout = merge(layout, Layout(title = "A Hit")),
             ),
         )
 
         display(
             plot_x_y(
-                (a_m_p, a_m_p_cr, a_m_p_cl);
-                name_ = ("P", "CR(P)", "CL(P)"),
+                [a_m_p, a_m_p_cr, a_m_p_cl];
+                name_ = ["P", "CR(P)", "CL(P)"],
                 layout = merge(layout, Layout(title = "A Miss")),
             ),
         )
