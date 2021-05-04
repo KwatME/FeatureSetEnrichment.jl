@@ -1,4 +1,3 @@
-using DataStructures: OrderedDict
 using Plotly: Layout
 
 using Information:
@@ -18,7 +17,7 @@ function score_set_new(
     set_element_::Vector{String};
     sort::Bool = true,
     plot::Bool = true,
-)::OrderedDict{String, Tuple{Vector{Float64}, Float64, Float64}}
+)::Dict{String, Tuple{Vector{Float64}, Float64, Float64}}
 
     if sort
 
@@ -147,7 +146,7 @@ function score_set_new(
 
     end
 
-    d = OrderedDict{String, Tuple{Vector{Float64}, Float64, Float64}}()
+    d = Dict{String, Tuple{Vector{Float64}, Float64, Float64}}()
 
     for (kv, hl, ml, hr, mr) in (
         ("is", is_ha_p_cl, is_m_p_cl, is_ha_p_cr, is_m_p_cr),
@@ -169,7 +168,7 @@ function score_set_new(
             for (k, v) in
                 (("$kv $kf <", l), ("$kv $kf >", r), ("$kv $kf <>", l - r))
 
-                (extreme, area) = get_extreme_and_area(v)
+                extreme, area = get_extreme_and_area(v)
 
                 if !plot
 
@@ -177,7 +176,7 @@ function score_set_new(
 
                 end
 
-                d[k] = (v, extreme, area)
+                d[k] = v, extreme, area
 
             end
 
@@ -193,7 +192,7 @@ function score_set_new(
                     ("$kv $(kf)w <>", l - r),
                 )
 
-                    (extreme, area) = get_extreme_and_area(v)
+                    extreme, area = get_extreme_and_area(v)
 
                     if !plot
 
@@ -201,7 +200,7 @@ function score_set_new(
 
                     end
 
-                    d[k] = (v, extreme, area)
+                    d[k] = v, extreme, area
 
                 end
 
@@ -241,7 +240,7 @@ function score_set_new(
     score_::Vector{Float64},
     set_to_element_::Dict{String, Vector{String}};
     sort::Bool = true,
-)::Dict{String, OrderedDict{String, Tuple{Vector{Float64}, Float64, Float64}}}
+)::Dict{String, Dict{String, Tuple{Vector{Float64}, Float64, Float64}}}
 
     if sort
 
@@ -249,10 +248,8 @@ function score_set_new(
 
     end
 
-    set_to_method_to_result = Dict{
-        String,
-        OrderedDict{String, Tuple{Vector{Float64}, Float64, Float64}},
-    }()
+    set_to_method_to_result =
+        Dict{String, Dict{String, Tuple{Vector{Float64}, Float64, Float64}}}()
 
     for (set, set_element_) in set_to_element_
 
