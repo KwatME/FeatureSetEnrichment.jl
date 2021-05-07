@@ -148,6 +148,18 @@ function score_set_new(
 
     d = Dict{String, Tuple{Vector{Float64}, Float64, Float64}}()
 
+    #v = compute_ks(is_ha_p_cl, is_m_p_cl)
+
+    #d["is ks <"] = (v, get_extreme_and_area(v)...)
+
+    #v = compute_idrs(a_h_p_cl, a_m_p_cl, a_p_cl)
+
+    #d["a idrsw <>"] = (v, get_extreme_and_area(v)...)
+
+    #v = compute_idrd(a_h_p_cl, a_m_p_cl, a_p_cl)
+
+    #d["a idrdw <>"] = (v, get_extreme_and_area(v)...)
+
     for (kv, hl, ml, hr, mr) in (
         ("is", is_ha_p_cl, is_m_p_cl, is_ha_p_cr, is_m_p_cr),
         ("a", a_h_p_cl, a_m_p_cl, a_h_p_cr, a_m_p_cr),
@@ -168,15 +180,7 @@ function score_set_new(
             for (k, v) in
                 (("$kv $kf <", l), ("$kv $kf >", r), ("$kv $kf <>", l - r))
 
-                extreme, area = get_extreme_and_area(v)
-
-                if !plot
-
-                    v = []
-
-                end
-
-                d[k] = v, extreme, area
+                d[k] = (v, get_extreme_and_area(v)...)
 
             end
 
@@ -192,19 +196,21 @@ function score_set_new(
                     ("$kv $(kf)w <>", l - r),
                 )
 
-                    extreme, area = get_extreme_and_area(v)
-
-                    if !plot
-
-                        v = []
-
-                    end
-
-                    d[k] = v, extreme, area
+                    d[k] = (v, get_extreme_and_area(v)...)
 
                 end
 
             end
+
+        end
+
+    end
+
+    if !plot
+
+        for (k, v) in d
+
+            d[k] = ([], v[2:3]...)
 
         end
 
