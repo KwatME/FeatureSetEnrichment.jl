@@ -9,8 +9,7 @@ function _plot(
     set_element_::Vector{String},
     is_::Vector{Float64},
     set_score_::Vector{Float64},
-    extreme::Float64,
-    area::Float64;
+    statistic::Float64;
     width::Real = 800,
     height::Real = 500,
     line_width::Real = 2.0,
@@ -128,9 +127,7 @@ function _plot(
         hoverinfo = "x+text",
     )
 
-    extreme = @sprintf "%.2e" extreme
-
-    area = @sprintf "%.2e" area
+    statistic = @sprintf "%.2e" statistic
 
     push!(
         layout["annotations"],
@@ -138,10 +135,7 @@ function _plot(
             x_annotation_template,
             attr(
                 y = 1.16,
-                text = join(
-                    ("<b>Extreme = $extreme</b>", "<b>Area = $area</b>"),
-                    "     ",
-                ),
+                text = "<b>Statistic = $statistic</b>",
                 font_size = title_font_size * 0.64,
                 font_color = "#2a603b",
             ),

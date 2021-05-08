@@ -1,15 +1,10 @@
+using OrderedCollections: OrderedDict
 using Plotly: Layout
 
 using Information:
     compute_kld, compute_idrs, compute_idrd, compute_ides, compute_ided
 using Plot: plot_x_y
-using Support: cumulate_sum_reverse, get_extreme_and_area, sort_like
-
-function compute_ks(v1::Vector{Float64}, v2::Vector{Float64})::Vector{Float64}
-
-    return v1 - v2
-
-end
+using Support: cumulate_sum_reverse, get_area, get_extreme, sort_like
 
 function score_set_new(
     element_::Vector{String},
@@ -17,7 +12,7 @@ function score_set_new(
     set_element_::Vector{String};
     sort::Bool = true,
     plot::Bool = true,
-)::Dict{String, Tuple{Vector{Float64}, Float64, Float64}}
+)::OrderedDict{String, Float64}
 
     if sort
 
@@ -146,92 +141,71 @@ function score_set_new(
 
     end
 
-    d = Dict{String, Tuple{Vector{Float64}, Float64, Float64}}()
+    d = OrderedDict{String, Float64}()
 
-    #v = compute_ks(is_ha_p_cl, is_m_p_cl)
+    function compute_ks(
+        v1::Vector{Float64},
+        v2::Vector{Float64},
+    )::Vector{Float64}
 
-    #d["is ks <"] = (v, get_extreme_and_area(v)...)
+        return v1 - v2
 
-    #v = compute_idrs(a_h_p_cl, a_m_p_cl, a_p_cl)
+    end
 
-    #d["a idrsw <>"] = (v, get_extreme_and_area(v)...)
-
-    #v = compute_idrd(a_h_p_cl, a_m_p_cl, a_p_cl)
-
-    #d["a idrdw <>"] = (v, get_extreme_and_area(v)...)
-
-    for (kv, hl, ml, hr, mr) in (
+    for (k1, hl, ml, hr, mr) in (
         ("is", is_ha_p_cl, is_m_p_cl, is_ha_p_cr, is_m_p_cr),
         ("a", a_h_p_cl, a_m_p_cl, a_h_p_cr, a_m_p_cr),
     )
 
-        for (kf, f) in (
+        for (k2, f1, args...) in (
             ("ks", compute_ks),
             ("idrs", compute_idrs),
+            ("idrsw", compute_idrs, a_p_cl),
             ("idrd", compute_idrd),
+            ("idrdw", compute_idrd, a_p_cl),
             ("ides", compute_ides),
             ("ided", compute_ided),
         )
 
-            l = f(hl, ml)
+            if k1 == "is" && endswith(k2, "w")
 
-            r = f(hr, mr)
-
-            for (k, v) in
-                (("$kv $kf <", l), ("$kv $kf >", r), ("$kv $kf <>", l - r))
-
-                d[k] = (v, get_extreme_and_area(v)...)
+                continue
 
             end
 
-            if kv == "a" && in(kf, ("idrs", "idrd"))
+            l = f1(hl, ml, args...)
 
-                l = f(hl, ml, a_p_cl)
+            r = f1(hr, mr, args...)
 
-                r = f(hr, mr, a_p_cr)
+            for (k3, v) in (("<", l), (">", r), ("<>", l - r))
 
-                for (k, v) in (
-                    ("$kv $(kf)w <", l),
-                    ("$kv $(kf)w >", r),
-                    ("$kv $(kf)w <>", l - r),
-                )
+                for (k4, f2) in (("area", get_area), ("extreme", get_extreme))
 
-                    d[k] = (v, get_extreme_and_area(v)...)
+                    k = join((k1, k2, k3, k4), " ")
+
+                    s = f2(v)
+
+                    d[k] = s
+
+                    if plot && k4 == "extreme"
+
+                        display(
+                            _plot(
+                                element_,
+                                score_,
+                                set_element_,
+                                is_h,
+                                v,
+                                s;
+                                title_text = k,
+                            ),
+                        )
+
+                    end
 
                 end
 
             end
-
-        end
-
-    end
-
-    if !plot
-
-        for (k, v) in d
-
-            d[k] = ([], v[2:3]...)
-
-        end
-
-    end
-
-    if plot
-
-        for (k, (set_score_, extreme, area)) in d
-
-            display(
-                _plot(
-                    element_,
-                    score_,
-                    set_element_,
-                    is_h,
-                    set_score_,
-                    extreme,
-                    area;
-                    title_text = k,
-                ),
-            )
 
         end
 
@@ -246,7 +220,7 @@ function score_set_new(
     score_::Vector{Float64},
     set_to_element_::Dict{String, Vector{String}};
     sort::Bool = true,
-)::Dict{String, Dict{String, Tuple{Vector{Float64}, Float64, Float64}}}
+)::Dict{String, OrderedDict{String, Float64}}
 
     if sort
 
@@ -254,8 +228,7 @@ function score_set_new(
 
     end
 
-    set_to_method_to_result =
-        Dict{String, Dict{String, Tuple{Vector{Float64}, Float64, Float64}}}()
+    set_to_method_to_result = Dict{String, OrderedDict{String, Float64}}()
 
     for (set, set_element_) in set_to_element_
 
