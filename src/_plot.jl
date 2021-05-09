@@ -127,7 +127,7 @@ function _plot(
         hoverinfo = "x+text",
     )
 
-    statistic = @sprintf "%.2e" statistic
+    statistic = @sprintf "%.3f" statistic
 
     push!(
         layout["annotations"],
