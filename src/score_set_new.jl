@@ -6,11 +6,18 @@ using Information:
 using Plot: plot_x_y
 using Support: cumulate_sum_reverse, get_area, get_extreme, sort_like
 
+function compute_ks(v1::Vector{Float64}, v2::Vector{Float64})::Vector{Float64}
+
+    return v1 - v2
+
+end
+
 function score_set_new(
     element_::Vector{String},
     score_::Vector{Float64},
     set_element_::Vector{String};
     sort::Bool = true,
+    plot_process::Bool = true,
     plot::Bool = true,
 )::OrderedDict{String, Float64}
 
@@ -64,7 +71,7 @@ function score_set_new(
 
     a_m_p_cl = cumulate_sum_reverse(a_m_p) .+ e
 
-    if plot
+    if plot_process
 
         layout = Layout(xaxis_title = "Element")
 
@@ -143,15 +150,6 @@ function score_set_new(
 
     d = OrderedDict{String, Float64}()
 
-    function compute_ks(
-        v1::Vector{Float64},
-        v2::Vector{Float64},
-    )::Vector{Float64}
-
-        return v1 - v2
-
-    end
-
     for (k1, hl, ml, hr, mr) in (
         ("is", is_ha_p_cl, is_m_p_cl, is_ha_p_cr, is_m_p_cr),
         ("a", a_h_p_cl, a_m_p_cl, a_h_p_cr, a_m_p_cr),
@@ -167,12 +165,6 @@ function score_set_new(
             ("ided", compute_ided),
         )
 
-            if k1 == "is" && endswith(k2, "w")
-
-                continue
-
-            end
-
             l = f1(hl, ml, args...)
 
             r = f1(hr, mr, args...)
@@ -181,13 +173,26 @@ function score_set_new(
 
                 for (k4, f2) in (("area", get_area), ("extreme", get_extreme))
 
-                    k = join((k1, k2, k3, k4), " ")
+                    k = join((k1, k3, k2, k4), " ")
+
+                    if !(
+                        k in (
+                            "is < ks area",
+                            "is <> idrd area",
+                            "a <> idrd area",
+                            "a <> idrdw area",
+                        )
+                    )
+
+                        continue
+
+                    end
 
                     s = f2(v)
 
                     d[k] = s
 
-                    if plot && k4 == "extreme"
+                    if plot
 
                         display(
                             _plot(
