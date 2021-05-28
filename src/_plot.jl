@@ -27,15 +27,10 @@ function _plot(
 
     yaxis3_domain = (0.32, 1.0)
 
-    annotation_template = attr(
-        xref = "paper",
-        yref = "paper",
-        yanchor = "middle",
-        showarrow = false,
-    )
+    annotation_template =
+        attr(xref = "paper", yref = "paper", yanchor = "middle", showarrow = false)
 
-    x_annotation_template =
-        merge(annotation_template, attr(xanchor = "center", x = 0.5))
+    x_annotation_template = merge(annotation_template, attr(xanchor = "center", x = 0.5))
 
     y_annotation_template = merge(
         annotation_template,
@@ -67,11 +62,7 @@ function _plot(
         annotations = [
             merge(
                 x_annotation_template,
-                attr(
-                    y = 1.24,
-                    text = "<b>$title_text</b>",
-                    font_size = title_font_size,
-                ),
+                attr(y = 1.24, text = "<b>$title_text</b>", font_size = title_font_size),
             ),
             merge(
                 x_annotation_template,
@@ -79,10 +70,7 @@ function _plot(
             ),
             merge(
                 y_annotation_template,
-                attr(
-                    y = get_center(yaxis1_domain...),
-                    text = "<b>$element_score_name</b>",
-                ),
+                attr(y = get_center(yaxis1_domain...), text = "<b>$element_score_name</b>"),
             ),
             merge(
                 y_annotation_template,
@@ -90,10 +78,7 @@ function _plot(
             ),
             merge(
                 y_annotation_template,
-                attr(
-                    y = get_center(yaxis3_domain...),
-                    text = "<b>Set Score</b>",
-                ),
+                attr(y = get_center(yaxis3_domain...), text = "<b>Set Score</b>"),
             ),
         ],
     )

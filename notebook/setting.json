@@ -1,5 +1,5 @@
 {
-    "benchmarks/": "/Users/kwat/Desktop/benchmarks/",
-    "gene_sets/": "/Users/kwat/Desktop/gene_sets/",
-    "benchmark_x_method.tsv": "benchmark_x_method.tsv"
+  "benchmarks/": "/Users/kwat/Desktop/benchmarks/",
+  "gene_sets/": "/Users/kwat/Desktop/gene_sets/",
+  "benchmark_x_method.tsv": "benchmark_x_method.tsv"
 }

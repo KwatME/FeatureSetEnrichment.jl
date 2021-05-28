@@ -1,8 +1,7 @@
 using OrderedCollections: OrderedDict
 using Plotly: Layout
 
-using Information:
-    compute_kld, compute_idrs, compute_idrd, compute_ides, compute_ided
+using Information: compute_kld, compute_idrs, compute_idrd, compute_ides, compute_ided
 using Plot: plot_x_y
 using Support: cumulate_sum_reverse, get_area, get_extreme, sort_like
 
@@ -19,7 +18,7 @@ function score_set_new(
     sort::Bool = true,
     plot_process::Bool = true,
     plot::Bool = true,
-)::OrderedDict{String, Float64}
+)::OrderedDict{String,Float64}
 
     if sort
 
@@ -79,20 +78,12 @@ function score_set_new(
 
             layout = merge(
                 layout,
-                Layout(
-                    xaxis_tickvals = 1:length(element_),
-                    xaxis_ticktext = element_,
-                ),
+                Layout(xaxis_tickvals = 1:length(element_), xaxis_ticktext = element_),
             )
 
         end
 
-        display(
-            plot_x_y(
-                [score_];
-                layout = merge(layout, Layout(yaxis_title = "Score")),
-            ),
-        )
+        display(plot_x_y([score_]; layout = merge(layout, Layout(yaxis_title = "Score"))))
 
         display(
             plot_x_y(
@@ -102,9 +93,7 @@ function score_set_new(
             ),
         )
 
-        display(
-            plot_x_y([a]; layout = merge(layout, Layout(yaxis_title = "A"))),
-        )
+        display(plot_x_y([a]; layout = merge(layout, Layout(yaxis_title = "A"))))
 
         display(
             plot_x_y(
@@ -148,7 +137,7 @@ function score_set_new(
 
     end
 
-    d = OrderedDict{String, Float64}()
+    d = OrderedDict{String,Float64}()
 
     for (k1, hl, ml, hr, mr) in (
         ("is", is_ha_p_cl, is_m_p_cl, is_ha_p_cr, is_m_p_cr),
@@ -223,9 +212,9 @@ end
 function score_set_new(
     element_::Vector{String},
     score_::Vector{Float64},
-    set_to_element_::Dict{String, Vector{String}};
+    set_to_element_::Dict{String,Vector{String}};
     sort::Bool = true,
-)::Dict{String, OrderedDict{String, Float64}}
+)::Dict{String,OrderedDict{String,Float64}}
 
     if sort
 
@@ -233,17 +222,12 @@ function score_set_new(
 
     end
 
-    set_to_method_to_result = Dict{String, OrderedDict{String, Float64}}()
+    set_to_method_to_result = Dict{String,OrderedDict{String,Float64}}()
 
     for (set, set_element_) in set_to_element_
 
-        set_to_method_to_result[set] = score_set_new(
-            element_,
-            score_,
-            set_element_;
-            sort = false,
-            plot = false,
-        )
+        set_to_method_to_result[set] =
+            score_set_new(element_, score_, set_element_; sort = false, plot = false)
 
     end
 

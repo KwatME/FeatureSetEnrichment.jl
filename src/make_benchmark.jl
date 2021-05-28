@@ -5,9 +5,7 @@ using StatsBase: sample
 using GCTGMT: read_gmt
 using Support: list_card
 
-function make_benchmark(
-    id::String,
-)::Tuple{Vector{String}, Vector{Float64}, Vector{String}}
+function make_benchmark(id::String)::Tuple{Vector{String},Vector{Float64},Vector{String}}
 
     split_ = split(id)
 
@@ -23,7 +21,7 @@ function make_benchmark(
 
     elseif split_[1] == "random"
 
-        element_ = ["e$i" for i in 1:parse(Int64, split_[2])]
+        element_ = ["e$i" for i = 1:parse(Int64, split_[2])]
 
         v = randn(convert(Int64, length(element_) / 2))
 

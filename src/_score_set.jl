@@ -5,7 +5,7 @@ function _score_set(
     is_::Vector{Float64};
     plot::Bool = true,
     plot_kwargs...,
-)::Tuple{Vector{Float64}, Float64, Float64}
+)::Tuple{Vector{Float64},Float64,Float64}
 
     n_element = length(element_)
 
@@ -23,7 +23,7 @@ function _score_set(
 
     d = 1.0 / m_sum
 
-    @inbounds @fastmath @simd for i in n_element:-1:1
+    @inbounds @fastmath @simd for i = n_element:-1:1
 
         if is_[i] == 1.0
 

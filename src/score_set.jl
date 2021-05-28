@@ -10,7 +10,7 @@ function score_set(
     sort::Bool = true,
     plot::Bool = true,
     plot_kwargs...,
-)::Tuple{Vector{Float64}, Float64, Float64}
+)::Tuple{Vector{Float64},Float64,Float64}
 
     if sort
 
@@ -32,9 +32,9 @@ end
 function score_set(
     element_::Vector{String},
     score_::Vector{Float64},
-    set_to_element_::Dict{String, Vector{String}};
+    set_to_element_::Dict{String,Vector{String}};
     sort::Bool = true,
-)::Dict{String, Tuple{Vector{Float64}, Float64, Float64}}
+)::Dict{String,Tuple{Vector{Float64},Float64,Float64}}
 
     if sort
 
@@ -52,7 +52,7 @@ function score_set(
 
     end
 
-    set_to_d = Dict{String, Tuple{Vector{Float64}, Float64, Float64}}()
+    set_to_d = Dict{String,Tuple{Vector{Float64},Float64,Float64}}()
 
     for (set, set_element_) in set_to_element_
 
@@ -72,7 +72,7 @@ end
 
 function score_set(
     element_x_sample::DataFrame,
-    set_to_element_::Dict{String, Vector{String}};
+    set_to_element_::Dict{String,Vector{String}};
     n_job::Int64 = 1,
 )::DataFrame
 
